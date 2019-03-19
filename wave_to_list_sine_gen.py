@@ -22,7 +22,7 @@ def sine_generator(freq, duration=10.0, sample_rate=44100.0):
     return values
 
 
-def wave_to_list(directory, full_time_scale = True, number_of_samples = 4410):
+def wave_to_list(directory, split_into_chunks = True, number_of_samples = 4410):
     wave_file = wave.open(directory, 'r')  # otwarcie pliku w trybie readonly
     wave_length = wave_file.getnframes()  # dlugosc pliku
     values = []  # pusta lista na wartosci wave'a
@@ -32,7 +32,7 @@ def wave_to_list(directory, full_time_scale = True, number_of_samples = 4410):
         data = struct.unpack("<hh", wave_data)  # zmiana z byte na tuple z intami
         values.append(int(data[0]))  # konwersja na liste intow
 
-    if not full_time_scale:
+    if split_into_chunks:
         for i in range(0, len(values), number_of_samples):
             chunk = values[i:i+number_of_samples]
             chunk_values.append(chunk)

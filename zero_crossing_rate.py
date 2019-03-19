@@ -1,13 +1,13 @@
 import wave_to_list_sine_gen
 
 
-def zero_crossing_rate(file_name, chunks):
+def zero_crossing_rate(file_name, split_into_chunks):
     prev_value = 0  # zmienna do przechowywania poprzedniej wartosci
     zero_crossing = 0
-    wave_values, wave_chunks = wave_to_list_sine_gen.wave_to_list(file_name, False, 2048)  # lista z wartosciami pliku
+    wave_values, wave_chunks = wave_to_list_sine_gen.wave_to_list(file_name, split_into_chunks, 2048)  # lista z wartosciami pliku
     chunk_array = []
     chunk = []
-    if chunks:
+    if not split_into_chunks:
         for value in wave_values:
             if value * prev_value < 0 or value == 0:  # jesli <= 0 to nastąpiło przejscie przez zero
                 zero_crossing += 1
