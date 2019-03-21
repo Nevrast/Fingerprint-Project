@@ -1,8 +1,7 @@
-test
 from sys import argv
 
-#do odkomentowania
-#from zero_crossing_rate import zero_crossing_rate
+#import potrzebnych funkcji
+from zero_crossing_rate import zero_crossing_rate
 
 #przypisanie argumentów z cmd do zmiennych
 #żeby wywołać skrypt dla sygnału "test.wav" znajdującego się w tym samym katalogu, odpal skrypt poleceniem: python fingerprint_creating.py ./test.wav
