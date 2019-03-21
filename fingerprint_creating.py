@@ -2,6 +2,7 @@ from sys import argv
 
 #import potrzebnych funkcji
 from zero_crossing_rate import zero_crossing_rate
+from wave_to_list import wave_to_list
 
 #przypisanie argumentów z cmd do zmiennych
 #żeby wywołać skrypt dla sygnału "test.wav" i zapisać f-print do pliku test.txt znajdującego się w tym samym katalogu, odpal skrypt poleceniem: python fingerprint_creating.py ./test.wav ./test.txt
