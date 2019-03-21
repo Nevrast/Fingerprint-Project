@@ -1,9 +1,9 @@
 from scipy.fftpack import fft
 import numpy as np
-import wave_to_array
+import wave_to_list
 import matplotlib.pyplot as plt
 
-wav_values, wav_values_chunks = wave_to_array.wave_to_list("in_the_element.wav", False)
+wav_values, wav_values_chunks = wave_to_list.wave_to_list("in_the_element.wav", False)
 print(type(wav_values))
 N = len(wav_values)
 print(N)

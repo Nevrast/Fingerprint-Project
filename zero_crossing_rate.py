@@ -1,11 +1,11 @@
-import wave_to_array
+import wave_to_list
 import numpy as np
 
 
 def zero_crossing_rate(file_name, split_into_chunks):
     prev_value = 0  # zmienna do przechowywania poprzedniej wartosci
     zero_crossing = 0
-    wave_values, wave_chunks = wave_to_array.wave_to_list(file_name, split_into_chunks, 5)  # lista z wartosciami pliku
+    wave_values, wave_chunks = wave_to_list.wave_to_list(file_name, split_into_chunks, 5)  # lista z wartosciami pliku
     chunk_array = []
     chunk = []
 
