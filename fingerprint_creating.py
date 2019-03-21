@@ -11,12 +11,15 @@ print (f"Input file: {INPUT_PATH}")
 print (f"Output file: {OUTPUT_PATH}")
 
 def fing_creat(input):
-    #tu będzie jakieś wczytywanie
-    #input_signal=
+    #wczytywanie pliku
+    input_signal, input_chunk = wave_to_list(input)
     # ...
+
+    #to jest lista, która stanie się fingerprintem
     fprint = []
 
-    # dodawanie kolejnych parametrów, nazwy funkcji powinny być nazwą parametru
+    # dodawanie kolejnych parametrów do listy
+    #nazwy funkcji powinny być nazwą parametru
     #każda funkcja powinna przyjmować jako argument istniejącą już listę fprint i sygnał wejściowy
     # \(przetworzony już wcześniej na dane cyfrowe), następnie wykonywać odpowiednie operacje, aby uzyskać dany parametr\
     #funkcją append dodać parametr jako kolejny element listy i zwracać listę, która była argumentem
