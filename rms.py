@@ -2,6 +2,10 @@ import math
 import wave_to_list
 import sine_gen
 
+"""
+TODO: support for windowed signal, documentation, clean up code
+"""
+
 
 def rms(wave_list):
     squares = 0
