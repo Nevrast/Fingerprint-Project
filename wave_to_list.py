@@ -16,30 +16,29 @@ def wave_to_list(file_name, split_into_chunks=True, window_size=64, offset=0):
                             into chunks
     """
     if window_size < 16:
-        window_size = 16  # minimum window size
-    wave_file = wave.open(file_name, 'r')
-    wave_length = wave_file.getnframes()
+        window_size = 16  # minimalny rozmiar okna
+    wave_file = wave.open(file_name, 'r')  # otawrcie pliku read-only
+    wave_length = wave_file.getnframes()  # długość pliku, int
 
-    values = []
-    chunk_values = []
+    values = []  # pusta lista na wartości pliku
+    chunk_values = []  # pusta lista na podlisty wartości pliku
 
-    for i in range(0, wave_length):  # converts bytes to list of integer values
-        wave_data = wave_file.readframes(1)
-        data = struct.unpack("<h", wave_data)
-        values.append(int(data[0]))
+    for i in range(0, wave_length):  # iteracja od 0 do długości pliku
+        wave_data = wave_file.readframes(1)  # odczytywanie pliku w postaci byte
+        data = struct.unpack("<h", wave_data)  # rozpakowywanie pliku i przygotowanie do zamiany na int
+        values.append(int(data[0]))  # zamiana z byte na int
+    values = normalize(values)  # normalizowanie listy do przedziału [1:-1]
 
-    values = normalize(values)  # normalizes values
-
-    if split_into_chunks:  # splits values into even chunks and creates
-        if offset == 0:    # list depending on input
-            for i in range(0, len(values), window_size):
-                chunk = values[i:i + int(window_size)]
-                chunk_values.append(chunk)
-        else:
+    if split_into_chunks:  # jesli argument jest True to robimy podział na okna
+        if offset == 0:    # jeśli offset jest 0 okienka sie nie nakładają
+            for i in range(0, len(values), window_size):  # iteracja po liście wartości co długość okna
+                chunk = values[i:i + int(window_size)]  # "cięcie" głównej listy na okna
+                chunk_values.append(chunk)  # dodwanie okienek na koniec głównej listy
+        else:  # jeśli chcemy żeby okna nachodziły na siebie o offset
             chunk_values.append(overlap(values, window_size, offset, chunk_values))
-            del chunk_values[-1]  # this has to be here because last element is always None
+            del chunk_values[-1]  # na koncu listy jest None wiec trzeba go usunąć
 
-    wave_file.close()
+    wave_file.close()  # WAŻNE - zamknięcie pliku
 
     return values, chunk_values
 
@@ -53,23 +52,25 @@ def overlap(values, window_size, offset, chunk_values, start=0):
     :param start: int, starting index of values
     :return: None
     """
-    overlap_size = int(window_size*offset/100)  # converts offset from % to value based on window size
+    overlap_size = int(window_size*offset/100)  # zamiana wartosci w % na liczbę próbek zależną od okna
 
-    while start <= len(values) - overlap_size:
-        chunk_values.append(values[start:start + window_size])
-        start += window_size - overlap_size
+    while start <= len(values) - overlap_size:  # wykonuje się dopóki długość listy - wielkość overlapu są mniejsze
+        # lub równe indexowi zaczynającemu podlistę
+        chunk_values.append(values[start:start + window_size])  # cięcie listy na okna przesunięte o offset
+        start += window_size - overlap_size  # zwiększanie indexu
 
 
 def normalize(values):
     """
-    :param values: lista wartości wave'a
-    :return: znormalizowana lista
+    :param values: values of wave file
+    :return: normalized list
     """
-    maximum = max(values)
-    normalized_values = []
+    maximum = max(values)  # przechowuje max wartość listy
+    minimum = abs(min(values))  # przechowuje max absolutną wartość listy
+    normalized_values = []  # tablica na znormalizowane wartości
 
-    for value in values:
-        normalized_value = value/maximum
-        normalized_values.append(normalized_value)
+    for value in values:  # iteracja po głównej liście
+        normalized_value = value/max(maximum, minimum)  # pojedyncza znormalizowana próbka
+        normalized_values.append(normalized_value)  # przypisanie znormalizowanej próbki do listy
 
     return normalized_values
