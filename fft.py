@@ -1,9 +1,12 @@
 from scipy.fftpack import fft
 import numpy as np
 
+
 def fft_function(wav_values):
-    f = fft(np.array(wav_values))
-    return f
+    param = []
+    for window in wav_values:
+        param.append(fft(np.array(window)))
+    return param
 
 
 # ---------------TESTS---------------------------
