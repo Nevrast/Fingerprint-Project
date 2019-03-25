@@ -5,7 +5,7 @@ TODO: threshold for zcr trigger
 """
 
 
-def zero_crossing_rate(input_singal, input_chunk=None):
+def zero_crossing_rate(input_singal=None, input_chunk=None):
     """
     :param input_singal: list, waveform values
     :param input_chunk: list2D, waveform split into chunks

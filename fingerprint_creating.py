@@ -25,7 +25,7 @@ def fing_creat(input):
     # \(przetworzony już wcześniej na dane cyfrowe), następnie wykonywać odpowiednie operacje, aby uzyskać dany parametr\
     #funkcją append dodać parametr jako kolejny element listy i zwracać listę, która była argumentem
 
-    zero_crossing_rate(fingerprint, input_signal)
+    fprint.append(zero_crossing_rate(input_chunk=input_chunk))
     #na razie będę wyświetlać zawartość fingerprinta po każdej funkcji, później postaram się to przenieść do trybu debugowania
     print(f"Fingerpint after zero_crossing_rate: {fprint}\n\n")
     #tu miejsce też na pozostałe funkcje
