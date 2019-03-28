@@ -25,7 +25,7 @@ def wave_to_list(file_name, split_into_chunks=True, window_size=64, offset=0):
 
     for i in range(0, wave_length):  # iteracja od 0 do długości pliku
         wave_data = wave_file.readframes(1)  # odczytywanie pliku w postaci byte
-        data = struct.unpack("<h", wave_data)  # rozpakowywanie pliku i przygotowanie do zamiany na int
+        data = struct.unpack("<hh", wave_data)  # rozpakowywanie pliku i przygotowanie do zamiany na int
         values.append(int(data[0]))  # zamiana z byte na int
     values = normalize(values)  # normalizowanie listy do przedziału [1:-1]
 
