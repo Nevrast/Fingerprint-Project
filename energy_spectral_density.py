@@ -4,6 +4,10 @@ import wave_to_list_sine_gen
 import fft
 
 def energy_spectral_denisity(fft_list):
+    """
+    :param fft_list: array, magnitude of fft
+    :return: list, values of energy spectral density
+    """
     #wzór na widmową gęstość energii: esp = (fft*sprzęrzenie zespolone fft)/(2*pi)
     con_fourier=[np.conjugate(values) for values in fft_list] #sprzężenie zespolone transformaty Fouriera
     esp = np.fft.fftshift([(a*b)/(2*np.pi) for a,b in zip(fft_list,con_fourier)]) #obliczanie widmowej gęstości energii ze wzoru
