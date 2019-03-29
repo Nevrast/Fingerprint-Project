@@ -1,33 +1,42 @@
-#czytanie argumentów z command line'a, -i jako sygnał wejściowy i opcjonalnie -o jako lokalizacja do zapisania fingerprinta
 from sys import argv
 
+#import potrzebnych funkcji
+from zero_crossing_rate import zero_crossing_rate
+from wave_to_list import wave_to_list
+
 #przypisanie argumentów z cmd do zmiennych
-INPUT_PATH, OUTPUT_PATH= argv
+#żeby wywołać skrypt dla sygnału "test.wav" i zapisać f-print do pliku test.txt znajdującego się w tym samym katalogu, odpal skrypt poleceniem: python fingerprint_creating.py ./test.wav ./test.txt
+#później dodam flagi -i, -o, ewentualnie -d do debugowania
+INPUT_PATH, OUTPUT_PATH = argv[1], argv[2]
+print (f"Input file: {INPUT_PATH}")
+print (f"Output file: {OUTPUT_PATH}")
 
 def fing_creat(input):
-    #tu będzie jakieś wczytywanie
-    #INPUT_SIGNAL =
+    #wczytywanie pliku
+    input_signal, input_chunk = wave_to_list(input)
     # ...
 
-    fingerprint = []
+    #to jest lista, która stanie się fingerprintem
+    fprint = []
 
-
-    # dodawanie kolejnych parametrów, nazwy funkcji powinny być nazwą parametru
-    #każda funkcja powinna przyjmować jako argument istniejącą już listę i sygnał wejściowy
-    # \(wyżej przetworzony już na dane cyfrowe), następnie wykonywać odpowiednie operacje, aby uzyskać dany parametr\
+    # dodawanie kolejnych parametrów do listy
+    #nazwy funkcji powinny być nazwą parametru
+    #każda funkcja powinna przyjmować jako argument istniejącą już listę fprint i sygnał wejściowy
+    # \(przetworzony już wcześniej na dane cyfrowe), następnie wykonywać odpowiednie operacje, aby uzyskać dany parametr\
     #funkcją append dodać parametr jako kolejny element listy i zwracać listę, która była argumentem
-    function1(fingerprint, INPUT_SIGNAL)
-    function2(fingerprint, INPUT_SIGNAL)
-    function3(fingerprint, INPUT_SIGNAL)
-    function4(fingerprint, INPUT_SIGNAL)
 
-    return fingerprint
+    fprint.append(zero_crossing_rate(input_chunk=input_chunk))
+    #na razie będę wyświetlać zawartość fingerprinta po każdej funkcji, później postaram się to przenieść do trybu debugowania
+    print(f"Fingerpint after zero_crossing_rate: {fprint}\n\n")
+    #tu miejsce też na pozostałe funkcje
+
+    return fprint
 
 def fing_save(fingerprint, output):
     #tu będzie operacja zapisania do pliku jeśli ścieżka została podana
     pass
 
-fing_creat(INPUT_PATH)
-
-if #został podany argument -o :
-    fing_save(fingerprint, OUTPUT_PATH)
+#wywołanie funkcji
+new_fingerprint = fing_creat(INPUT_PATH)
+#if #został podany argument -o :
+fing_save(new_fingerprint, OUTPUT_PATH)

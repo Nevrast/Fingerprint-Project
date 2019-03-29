@@ -1,34 +1,36 @@
-import wave_to_list_sine_gen
+import numpy as np
+
+"""
+TODO: threshold for zcr trigger
+"""
 
 
-def zero_crossing_rate(file_name, split_into_chunks):
-    prev_value = 0  # zmienna do przechowywania poprzedniej wartosci
-    zero_crossing = 0
-    wave_values, wave_chunks = wave_to_list_sine_gen.wave_to_list(file_name, split_into_chunks, 2048)  # lista z wartosciami pliku
-    chunk_array = []
-    chunk = []
-    if not split_into_chunks:
-        for value in wave_values:
-            if value * prev_value < 0 or value == 0:  # jesli <= 0 to nastąpiło przejscie przez zero
+def zero_crossing_rate(input_singal=None, input_chunk=None):
+    """
+    :param input_singal: list, waveform values
+    :param input_chunk: list2D, waveform split into chunks
+    :return: Zero Crossing Rate of whole waveform or ZCR of every chunk
+    """
+    prev_value = 0  # przechowuje poprzednią wartość
+    zero_crossing = 0  # liczba przejść przez zero
+
+    if input_chunk is None:  # jeśli nie dostajemy okienek to robimy tylko zcr dla całego sygnału
+        for value in input_singal:  # zwykla iteracja po wartościach
+            if value * prev_value < 0 or value == 0:  # jeśli jest spelnione to nastąpiło ZC
                 zero_crossing += 1
-            prev_value = value
+            prev_value = value  # zapis poprzedniej wartości
+
         return zero_crossing
     else:
         zero_crossing_in_chunk = []
-        for i in range(len(wave_chunks)):
-            chunk.clear()
-            zero_crossing = 0
-            for j in wave_chunks[i]:
-                chunk.append(j)
-            for value in chunk:
-                if value * prev_value < 0 or value == 0:  # jesli <= 0 to nastąpiło przejscie przez zero
+
+        for i in range(len(input_chunk)):  # iteracja po liście okienek
+            zero_crossing = 0  # resetowanie wartości ZC dla nowego okienka
+            for j in input_chunk[i]:  # iteracja po i-tym okienku
+                if j * prev_value < 0 or j == 0:  # jeśli jest spełnione to nastąpiło ZC
                     zero_crossing += 1
-                prev_value = value
-            zero_crossing_in_chunk.append(zero_crossing)
-            chunk_array.append(chunk)
-        print(sum(zero_crossing_in_chunk))
-        return zero_crossing_in_chunk
+                prev_value = j  # zapis poprzedniej wartości
+            zero_crossing_in_chunk.append(zero_crossing)  # dodanie przejść przez zero okna do listy
 
+        return np.array(zero_crossing_in_chunk)
 
-print(zero_crossing_rate("in_the_element.wav", True))
-print(zero_crossing_rate("in_the_element.wav", False))
