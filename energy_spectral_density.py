@@ -28,6 +28,6 @@ def energy_spectral_denisity(fft_list):
 
 #--------------TESTS---------------------------
 #wywoaływanie funkcji, aby sprawdzić, czy funkcja działa poprawnie
-#wav_values, wav_values_chunks = wave_to_list_sine_gen.wave_to_list("sine_1000.0.wav", False, 44100)
+#wav_values, wav_values_chunks = wave_to_list_sine_gen.wave_to_list("sine_10000.0.wav", False, 44100)
 #fft_list = fft.fft_function(wav_values)
 #print(energy_spectral_denisity(fft_list))
