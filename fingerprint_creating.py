@@ -1,3 +1,4 @@
+
 from sys import argv
 
 #import potrzebnych funkcji
@@ -44,7 +45,10 @@ def fing_creat(input):
 
 def fing_save(fingerprint, output):
     #tu będzie operacja zapisania do pliku jeśli ścieżka została podana
-    pass
+    file = open(output, 'w')
+    for elem in fingerprint:
+        file.write(str(elem))
+    file.close()
 
 #wywołanie funkcji
 new_fingerprint = fing_creat(INPUT_PATH)
