@@ -18,7 +18,7 @@ print (f"Output file: {OUTPUT_PATH}")
 def fing_creat(input):
     #wczytywanie pliku
     #input_chunk to zokienkowany sygnał?
-    input_signal, input_chunk = wave_to_list(input)
+    input_signal, input_chunk, sampling_rate = wave_to_list(input)
 
     #to jest lista, która stanie się fingerprintem
     fprint = []
