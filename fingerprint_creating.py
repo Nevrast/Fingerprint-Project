@@ -1,8 +1,10 @@
 from sys import argv
 
 #import potrzebnych funkcji
-from zero_crossing_rate import zero_crossing_rate
 from wave_to_list import wave_to_list
+from zero_crossing_rate import zero_crossing_rate
+from energy_spectral_density import energy_spectral_denisity
+from rms import rms
 
 #przypisanie argumentów z cmd do zmiennych
 #żeby wywołać skrypt dla sygnału "test.wav" i zapisać f-print do pliku test.txt znajdującego się w tym samym katalogu, odpal skrypt poleceniem: python fingerprint_creating.py ./test.wav ./test.txt
@@ -13,6 +15,7 @@ print (f"Output file: {OUTPUT_PATH}")
 
 def fing_creat(input):
     #wczytywanie pliku
+    #input_chunk to zokienkowany sygnał?
     input_signal, input_chunk = wave_to_list(input)
     # ...
 
@@ -27,8 +30,13 @@ def fing_creat(input):
 
     fprint.append(zero_crossing_rate(input_chunk=input_chunk))
     #na razie będę wyświetlać zawartość fingerprinta po każdej funkcji, później postaram się to przenieść do trybu debugowania
-    print(f"Fingerpint after zero_crossing_rate: {fprint}\n\n")
-    #tu miejsce też na pozostałe funkcje
+    print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
+
+    fprint.append(energy_spectral_denisity(input_chunk))
+    print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+
+    fprint.append(rms(input_chunk))
+    print(f"Rms in fprint: {fprint[2]}\n\n")
 
     return fprint
 
