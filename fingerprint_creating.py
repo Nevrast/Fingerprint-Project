@@ -5,6 +5,7 @@ from wave_to_list import wave_to_list
 from zero_crossing_rate import zero_crossing_rate
 from energy_spectral_density import energy_spectral_denisity
 from rms import rms
+from spectral_centroid import spectral_centroid
 
 #przypisanie argumentów z cmd do zmiennych
 #żeby wywołać skrypt dla sygnału "test.wav" i zapisać f-print do pliku test.txt znajdującego się w tym samym katalogu, odpal skrypt poleceniem: python fingerprint_creating.py ./test.wav ./test.txt
@@ -17,16 +18,14 @@ def fing_creat(input):
     #wczytywanie pliku
     #input_chunk to zokienkowany sygnał?
     input_signal, input_chunk = wave_to_list(input)
-    # ...
 
     #to jest lista, która stanie się fingerprintem
     fprint = []
 
     # dodawanie kolejnych parametrów do listy
-    #nazwy funkcji powinny być nazwą parametru
-    #każda funkcja powinna przyjmować jako argument istniejącą już listę fprint i sygnał wejściowy
-    # \(przetworzony już wcześniej na dane cyfrowe), następnie wykonywać odpowiednie operacje, aby uzyskać dany parametr\
-    #funkcją append dodać parametr jako kolejny element listy i zwracać listę, która była argumentem
+    # nazwy funkcji powinny być nazwą parametru
+    # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
+    # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
 
     fprint.append(zero_crossing_rate(input_chunk=input_chunk))
     #na razie będę wyświetlać zawartość fingerprinta po każdej funkcji, później postaram się to przenieść do trybu debugowania
@@ -37,6 +36,9 @@ def fing_creat(input):
 
     fprint.append(rms(input_chunk))
     print(f"Rms in fprint: {fprint[2]}\n\n")
+
+    fprint.append(spectral_centroid(input_chunk))
+    print(f"Spectral centroid in fprint: {fprint[3]}\n\n")
 
     return fprint
 
