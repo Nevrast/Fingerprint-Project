@@ -1,7 +1,5 @@
-import wave_to_list
 import numpy as np
 
-wave, chunk, framerate = wave_to_list.wave_to_list('ChillingMusic.wav')
 def stft_bins(wave, chunk, d=1.0):
     wave = np.array(wave)
     l = len(chunk)
