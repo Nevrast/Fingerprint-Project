@@ -1,6 +1,4 @@
 import wave
-import struct
-import math
 import numpy as np
 
 
@@ -25,6 +23,3 @@ def sine_generator(freq, duration=10.0, sample_rate=44100.0, stereo=True):
         wav_out.setframerate(sample_rate)
         wav_out.writeframes(sine_16bit)
     wav_out.close()
-
-
-#sine_generator(100.0, 1)
