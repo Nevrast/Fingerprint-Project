@@ -43,7 +43,7 @@ def wave_to_list(file_name, split_into_chunks=True, window_size=64, offset=0):
 
     wave_file.close()  # WAŻNE - zamknięcie pliku
 
-    return values, chunk_values, wave_file.getframerate()
+    return values, chunk_values, wave_file.getframerate(), wave_file.getnframes()
 
 
 def overlap(values, window_size, offset, chunk_values, start=0):
