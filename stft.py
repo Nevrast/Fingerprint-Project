@@ -1,13 +1,13 @@
 import numpy as np
 
-def stft_bins(wave, chunk, d=1.0):
-    wave = np.array(wave)
-    l = len(chunk)
-    Nwindows = wave.size // l
-    t = np.arange(Nwindows) * (l * d)
-    f = np.fft.rfftfreq(l, d)
+def stft_bins(input_signal, input_chunk, d=1.0):
+    input_signal = np.array(input_signal)
+    lic = len(input_chunk)
+    Nwindows = input_signal.size // lic
+    t = np.arange(Nwindows) * (lic * d)
+    f = np.fft.rfftfreq(lic, d)
     return t, f
-print ( stft_bins(wave, chunk))
+print ( stft_bins(input_signal, input_chunk))
 
 """
         Short-time Fourier transform: convert a 1D vector to a 2D array
@@ -16,11 +16,11 @@ print ( stft_bins(wave, chunk))
         The resulting 2D array can 
         Parameters
         ----------
-        x : array_like
+        input_signal : array_like
             Input signal (expected to be real)
-        Nwin : int
-            Length of each window (chunk of the signal). Should be ≪ `len(x)`.
+        input_chunk: int
+            Length of each window (chunk of the signal). Should be ≪ `len(input_signal)`.
         -------
         out : complex ndarray
-            `len(x) // Nwin` by `Nfft` complex array representing the STFT of `x`.
+            `len(input_signal) // input_chunk` by `Nfft` complex array representing the STFT of `input_signal`.
 """
