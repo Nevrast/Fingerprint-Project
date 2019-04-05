@@ -14,3 +14,4 @@ def spectral_centroid(input_chunk, samplerate=44100):
         sc = sc.tolist()
         param.append(sc[0])
     return np.array(param)
+
