@@ -2,14 +2,14 @@ import wave_to_list, fft
 import matplotlib.pyplot as plt
 import numpy as np
 
-wave_data, chunks, sample_rate = wave_to_list.wave_to_list("cello.wav", window_size=2048)
+#wave_data, chunks, sample_rate = wave_to_list.wave_to_list("cello.wav", window_size=2048)
 
 #print(chunks[0])
-fy = fft.fft_function(chunks)
-w = np.fft.fft(chunks[0])
-frate = 44100.0
 
-def octave_fft(wav_walues):
+def octave_fft(wav_values):
+    w = np.fft.fft(wav_values[0])
+    fy = fft.fft_function(wav_values)
+    frate = 44100.0
     octave = [16, 31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
     param = []
 
@@ -27,4 +27,4 @@ def octave_fft(wav_walues):
             #print(param)
     return param
 
-print(octave_fft('cello.wav'))
+#print(octave_fft('cello.wav'))
