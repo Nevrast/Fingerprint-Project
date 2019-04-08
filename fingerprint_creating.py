@@ -12,18 +12,20 @@ from oct import octave_fft
 #opis skryptu
 parser = argparse.ArgumentParser(description='This is a script which creates fingerprint matrix for specified input signal.')
 #obowiązkowy argument dla wejściowego pliku
-parser.add_argument("input", help = "- input signal name")
+parser.add_argument("input", help = "- input signal")
 #opcjonalny argument dla pliku wyjściowego
-parser.add_argument("-o", "--output", help = "- output file name")
+parser.add_argument("-o", "--output", help = "- output file")
 #aby wywołać tryb debugujący należy wywołać tylko flagę -d bez żadnej wartości
-parser.add_argument("-d", "--debug", help = "- debugging mode, called without any value", default = False, action = 'store_true')
+parser.add_argument("-d", "--debug", help = "- debugging mode, this argument is called without any value", default = False, action = 'store_true')
 
 args =parser.parse_args()
-print("Input file: ", args.input)
+if args.debug:
+    print("Input file: ", args.input)
 INPUT_PATH = args.input
 
 if args.output:
-    print("Output file:", args.output)
+    if args.debug:
+        print("Output file:", args.output)
     OUTPUT_PATH = args.output
 
 def fing_creat(input):
