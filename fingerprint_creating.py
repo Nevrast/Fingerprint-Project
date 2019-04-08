@@ -43,12 +43,12 @@ def fing_creat(input):
     #print(f"Spectral centroid in fprint: {fprint[3]}\n\n")
 
     fprint.append(octave_fft(input_chunk))
-    print(f"octave_fft in fprint: {fprint[4]}\n\n")
+    #print(f"octave_fft in fprint: {fprint[4]}\n\n")
 
     return fprint
 
 def fing_save(fingerprint, output):
-    #tu będzie operacja zapisania do pliku jeśli ścieżka została podana
+    #operacja zapisania do pliku jeśli ścieżka została podana
     file = open(output, 'w')
     for elem in fingerprint:
         file.write(str(elem))
