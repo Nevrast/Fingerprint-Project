@@ -6,7 +6,7 @@ The second step is measuring the difference between the examined fingerprint and
 
 ## Requirements
 If you want to use this project, you need to install Python 3 and following libraries:
-- **numpy**
-- **scipy**
-- **argparse**
+- **numpy,**
+- **scipy,**
+- **argparse,**
 - **matplotlib.**
