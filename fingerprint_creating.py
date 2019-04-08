@@ -18,7 +18,9 @@ parser.add_argument("-o", "--output", help = "- output file")
 #aby wywołać tryb debugujący należy wywołać tylko flagę -d bez żadnej wartości
 parser.add_argument("-d", "--debug", help = "- debugging mode, this argument is called without any value", default = False, action = 'store_true')
 
+#rozpakowanie parsera
 args =parser.parse_args()
+#wyświetla nazwy plików wejściowego i wyjściowego tylko w trybie debug
 if args.debug:
     print("Input file: ", args.input)
 INPUT_PATH = args.input
@@ -75,7 +77,7 @@ def fing_save(fingerprint, output):
     if args.debug:
         print("Saving to file finished.")
 
-#wywołanie funkcji
+#wywołanie funkcji i przypisanie do zmiennej new_fingerprint
 new_fingerprint = fing_creat(INPUT_PATH)
 #jeśli został podany argument -o zostanie wywołana funkcja zapisująca do pliku
 if args.output:
