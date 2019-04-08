@@ -9,5 +9,4 @@ If you want to use this project, you need to install Python 3 and following libr
 - **numpy**
 - **scipy**
 - **argparse**
-and optionally if you want uncomment plot drawing:
 - **matplotlib.**
