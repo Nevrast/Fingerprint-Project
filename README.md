@@ -8,6 +8,5 @@ The second step is measuring the difference between the examined fingerprint and
 If you want to use this project, you need to install Python 3 and following libraries:
 -numpy,
 -scipy,
--librosa,
 and optionally if you want uncomment plot drawing:
 -matplotlib.
