@@ -75,7 +75,7 @@ def fing_save(fingerprint, output):
     if args.debug:
         print("Saving to file finished.")
 
-#wywołanie funkcji
+#wywołanie funkcji i przypisanie do zmiennej new_fingerprint
 new_fingerprint = fing_creat(INPUT_PATH)
 #jeśli został podany argument -o zostanie wywołana funkcja zapisująca do pliku
 if args.output:
