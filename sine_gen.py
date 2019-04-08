@@ -1,20 +1,25 @@
 import wave
-import struct
-import math
+import numpy as np
 
 
-def sine_generator(freq, duration=10.0, sample_rate=44100.0):
-    values = []  # pusta lista na wartości wave'a
-
-    wave_file = wave.open("sine_" + str(freq) + ".wav", 'w')  # otwarcie wave'a
-    wave_file.setnchannels(1)  # mono
-    wave_file.setsampwidth(2)  # liczba bitow na których zapisana jest próbka
-    wave_file.setframerate(sample_rate)  # ustawienie f.probkowania
-
-    for i in range(int(duration * sample_rate)):  # iteracja o dlugosci wave'a
-        value = int(32767.0 * math.sin(freq * 2.0 * math.pi * float(i) / float(sample_rate)))  # robienie sinusa
-        values.append(value)  # tworzenie listy z wartosciami do pozniejszego użytku
-        data = struct.pack('<h', value)  # konwersja z int na byte
-        wave_file.writeframesraw(data)  # zapis do wav
-    wave_file.close()
-    return values
+def sine_generator(freq, duration=10.0, sample_rate=44100.0, stereo=True):
+    amp = np.power(2, 16) / 2 - 1
+    time = np.arange(0, duration, 1./sample_rate)
+    sine_wave = amp * np.sin(freq * 2 * np.pi * time)
+    sine_16bit = sine_wave.astype(np.int16)
+    if stereo:
+        stereo_sine = np.repeat(sine_16bit, 2)
+        stereo_name = 'stereo_'
+        wav_out = wave.open(r'sine_' + stereo_name + str(freq) + '.wav', 'wb')
+        wav_out.setnchannels(2)
+        wav_out.setsampwidth(2)
+        wav_out.setframerate(sample_rate)
+        wav_out.writeframes(stereo_sine)
+    else:
+        stereo_name = 'mono_'
+        wav_out = wave.open(r'sine_' + stereo_name + str(freq) + '.wav', 'wb')
+        wav_out.setnchannels(1)
+        wav_out.setsampwidth(2)
+        wav_out.setframerate(sample_rate)
+        wav_out.writeframes(sine_16bit)
+    wav_out.close()
