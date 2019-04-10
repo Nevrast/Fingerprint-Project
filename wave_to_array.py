@@ -42,7 +42,7 @@ def wave_to_array(file_name, window_size=2048, offset=0, to_mono=False):
 # obsługa plików dwukanałowych
     elif wave_data_t.ndim == 2:
         flat_l = wave_data_t[0::2].flatten()  # ektrakcja kanału lewego i 'spłaszczenie' go do jednego wymiaru
-        flat_r = wave_data_t[1::2].flatten()  # to samo dla kanału prawego(kanał lewy to próbki parzyste, a prawy nieparzyste)
+        flat_r = wave_data_t[1::2].flatten()  # to samo dla kanału prawego(lewy to próbki parzyste, a prawy nieparzyste)
         windows_l = util.view_as_windows(flat_l, window_shape=(window_size,), step=offset)
         windows_r = util.view_as_windows(flat_r, window_shape=(window_size,), step=offset)
 
