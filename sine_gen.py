@@ -10,14 +10,14 @@ def sine_generator(freq, duration=10.0, sample_rate=44100.0, stereo=True):
     if stereo:
         stereo_sine = np.repeat(sine_16bit, 2)
         stereo_name = 'stereo_'
-        wav_out = wave.open(r'sine_' + stereo_name + str(freq) + '.wav', 'wb')
+        wav_out = wave.open(r'sine_' + stereo_name + str(freq) + '_' + str(sample_rate/1000) + 'kHz.wav', 'wb')
         wav_out.setnchannels(2)
         wav_out.setsampwidth(2)
         wav_out.setframerate(sample_rate)
         wav_out.writeframes(stereo_sine)
     else:
         stereo_name = 'mono_'
-        wav_out = wave.open(r'sine_' + stereo_name + str(freq) + '.wav', 'wb')
+        wav_out = wave.open(r'sine_' + stereo_name + str(freq) + '_' + str(sample_rate/1000) + 'kHz.wav', 'wb')
         wav_out.setnchannels(1)
         wav_out.setsampwidth(2)
         wav_out.setframerate(sample_rate)
