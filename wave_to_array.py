@@ -10,9 +10,8 @@ def wave_to_array(file_name, window_size=2048, offset=0, to_mono=False, fill_zer
     :param offset: int, defines how many samples will overlap
     :param to_mono: bool, if True converts stereo file to mono
     :param fill_zeros: bool, if True adds zeros at the end of file to make windows have equal shape
-    :return: sample_rate, sampling frequency of wav file
-    :return: windows_l, left channel signal or mono signal split into windows
-    :return: windows_r, right channel signal split into windows
+    :return: sample_rate, sampling frequency of wav file;
+    windows_l, left channel signal or mono signal split into windows; windows_r, right channel signal split into windows
     """
 
 # sprawdzanie czy offset jest potęgą dwójki i jest mniejszy niż rozmiar okna
