@@ -23,11 +23,11 @@ def zero_crossing(ch_left, ch_right):
                 z_c += 1
         last_value = i[j]
         zcr = np.append(zcr, z_c)
+    return np.sum(zcr)
 
-
-    print(np.sum(zcr, dtype=np.int16))
-zero_crossing(left, right)
-plt.plot(left.flat)
-plt.show()
+   # print(np.sum(zcr, dtype=np.int16))
+# zero_crossing(left, right)
+# plt.plot(left.flat)
+# plt.show()
 
 

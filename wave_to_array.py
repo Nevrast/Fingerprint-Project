@@ -25,16 +25,16 @@ def wave_to_array(file_name, window_size=2048, offset=0, to_mono=False, fill_zer
     sample_rate, wave_data = wavfile.read(file_name)  # wczytanie pliku
     wave_data_t = wave_data.T  # transponowanie macierzy
     offset = window_size - offset  # obliczanie nakładania się okienek
-
+    print(wave_data.shape)
 # dodaje zera na koniec macierzy jeśli długość wave'a nie jest wielokrotnąścią f_próbkowania
     if fill_zeros and sample_rate % window_size != 0:
-        print(sample_rate % window_size)
+        #print(sample_rate % window_size)
         wave_data_t_left = np.append(wave_data_t[0], np.zeros(
             (window_size-(sample_rate % window_size),), dtype=np.int16))
         wave_data_t_right = np.append(wave_data_t[1], np.zeros(
             (window_size-(sample_rate % window_size),), dtype=np.int16))
         wave_data_t = np.vstack((wave_data_t_left, wave_data_t_right))
-        print(wave_data_t.shape)
+        #print(wave_data_t.shape)
 # jeśli nie chcemy offsetu to krok musi być równy długości okna
     if offset == 0:
         offset = window_size
