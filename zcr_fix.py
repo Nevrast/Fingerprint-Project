@@ -1,33 +1,40 @@
-from wave_to_array import wave_to_array
-from sine_gen import sine_generator
-import matplotlib.pyplot as plt
 import numpy as np
 
-sine_generator(10.0, 1.0, 50, True)
-sr, left, right = wave_to_array('yamaha.wav', 1024, fill_zeros=True)
 
+def zero_crossing(ch_left, ch_right=None):
 
-def zero_crossing(ch_left, ch_right):
-    zcr = np.array([])
-    last_value = -1
+    zcr_left = np.array([])
+    zcr_right = np.array([])
+
     for i in ch_left:
-        z_c = 0
-        for j in range(int(i.shape[0])):
-            if np.sign(i[j]) == 0:
-                i[j] = -1
-            if j == 0:
-                if np.sign(last_value) != np.sign(i[j]):
-                    z_c += 1
-                continue
-            if np.sign(i[j]) != np.sign(i[j-1]):
-                z_c += 1
-        last_value = i[j]
-        zcr = np.append(zcr, z_c)
-    return np.sum(zcr)
+        zc = 0
 
-   # print(np.sum(zcr, dtype=np.int16))
-# zero_crossing(left, right)
-# plt.plot(left.flat)
-# plt.show()
+        for j in range(int(i.shape[0])-1):
+            if i[j] == 0:
+                i[j] = -1
+            if i[j] > 0 and i[j+1] < 0:
+                zc += 1
+            elif i[j] < 0 and i[j+1] > 0:
+                zc += 1
+
+        zcr_left = np.append(zcr_left, zc)
+
+    if type(ch_right) == type(ch_left):
+        for i in ch_right:
+            zc = 0
+
+            for j in range(int(i.shape[0])-1):
+                if i[j] == 0:
+                    i[j] = -1
+                if i[j] > 0 and i[j+1] < 0:
+                    zc += 1
+                elif i[j] < 0 and i[j+1] > 0:
+                    zc += 1
+
+            zcr_right = np.append(zcr_right, zc)
+    else:
+        zcr_right = -1
+    return np.sum(zcr_left), np.sum(zcr_right)
+
 
 

@@ -2,46 +2,29 @@ import wave
 import struct
 import numpy as np
 
-def wave_read(file_name):
-    # wave_file = wave.open(file_name, 'rb')
-    # channels = wave_file.getnchannels()
-    # sample_freq = wave_file.getframerate()
-    # if channels == 1:
-    #     mono = []
-    #     for frame in range(0, wave_file.getnframes()):
-    #         wave_data = wave_file.readframes(1)
-    #         data = struct.unpack("<h", wave_data)
-    #         mono.append(data[0])
-    # print(mono)
-    # if channels == 2:
-    #     left = []
-    #     right = []
-    #     for frame in range(0, wave_file.getnframes()):
-    #         wave_data = wave_file.readframes(1)
-    #         data = struct.unpack("<hh", wave_data)
-    #         left.append(data[0])
-    #     print(sum(left))
-    #     for frame in range(1, wave_file.getnframes()):
-    #         wave_data = wave_file.readframes(1)
-    #         data = struct.unpack("<hh", wave_data)
-    #         right.append(data[0])
-    #     print(sum(right))
-    wave_file = wave.open(file_name, 'r')
-    nframes = wave_file.getnframes()
-    nchannels = wave_file.getnchannels()
-    sampling_frequency = wave_file.getframerate()
-    T = nframes / float(sampling_frequency)
-    read_frames = wave_file.readframes(nframes)
-    wave_file.close()
-    data = struct.unpack("%dh" % nchannels * nframes, read_frames)
-    return T, data, nframes, nchannels, sampling_frequency
 
-# print(wave_read("sine_1000.0.wav"))
-T, data, nframes, nchannels, sampling_freq = wave_read("sine_stereo_100.0_44.1kHz.wav")
-left = data[0:50:2]
-right = data[1:50:2]
-array = np.array(left)
-print(left)
-print(array)
+def wave_open(file_name):
+    wave_file = wave.open(file_name, 'rb')
+
+    number_of_frames = wave_file.getnframes()
+    channels = wave_file.getnchannels()
+    sampling_rate = wave_file.getframerate()
+    duration = number_of_frames / float(sampling_rate)
+    read_frames = wave_file.readframes(number_of_frames)
+
+    wave_file.close()
+
+    data = struct.unpack("%dh" % channels * number_of_frames, read_frames)
+
+    if channels == 1:
+        data = np.array(data, dtype=np.int16)
+    elif channels == 2:
+        left = np.array(data[0::2], dtype=np.int16)
+        right = np.array(data[1::2], dtype=np.int16)
+        data = np.vstack((left, right))
+
+    else:
+        raise ValueError("Unsupported number of channels")
+    return data, number_of_frames, channels, sampling_rate, duration
 
 
