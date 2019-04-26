@@ -3,15 +3,15 @@ from scipy.io import wavfile
 import numpy as np
 
 
-def wave_to_array(file_name, window_size=2048, offset=0, to_mono=False):
+def wave_to_array(file_name, window_size=2048, offset=0, to_mono=False, fill_zeros=True):
     """
     :param file_name: string, name or path to the file
     :param window_size: int, size of single window
     :param offset: int, defines how many samples will overlap
     :param to_mono: bool, if True converts stereo file to mono
-    :return: sample_rate, sampling frequency of wav file
-    :return: windows_l, left channel signal or mono signal split into windows
-    :return: windows_r, right channel signal split into windows
+    :param fill_zeros: bool, if True adds zeros at the end of file to make windows have equal shape
+    :return: sample_rate, sampling frequency of wav file;
+    windows_l, left channel signal or mono signal split into windows; windows_r, right channel signal split into windows
     """
 
 # sprawdzanie czy offset jest potęgą dwójki i jest mniejszy niż rozmiar okna
@@ -25,6 +25,15 @@ def wave_to_array(file_name, window_size=2048, offset=0, to_mono=False):
     sample_rate, wave_data = wavfile.read(file_name)  # wczytanie pliku
     wave_data_t = wave_data.T  # transponowanie macierzy
     offset = window_size - offset  # obliczanie nakładania się okienek
+
+# dodaje zera na koniec macierzy jeśli długość wave'a nie jest wielokrotnąścią f_próbkowania
+    if fill_zeros and sample_rate % window_size != 0:
+        #print(sample_rate % window_size)
+        wave_data_t_left = np.append(wave_data_t[0], np.zeros(
+            (window_size-(sample_rate % window_size),), dtype=np.int16))
+        wave_data_t_right = np.append(wave_data_t[1], np.zeros(
+            (window_size-(sample_rate % window_size),), dtype=np.int16))
+        wave_data_t = np.vstack((wave_data_t_left, wave_data_t_right))
 
 # jeśli nie chcemy offsetu to krok musi być równy długości okna
     if offset == 0:
