@@ -9,4 +9,5 @@ If you want to use this project, you need to install Python 3 and following libr
 - **numpy,**
 - **scipy,**
 - **argparse,**
-- **matplotlib.**
+- **matplotlib,**
+- **skimage** (use the command: <em>"pip install scikit-image"<em>).
