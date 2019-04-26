@@ -3,11 +3,13 @@ import argparse
 
 #import potrzebnych funkcji
 from wave_to_list import wave_to_list
-from zero_crossing_rate import zero_crossing_rate
+from zcr import zero_crossing
 from energy_spectral_density import energy_spectral_denisity
 from rms import rms
 from spectral_centroid import spectral_centroid
 from oct import octave_fft
+from wave_read import wave_open
+from windowing import windowing
 
 #opis skryptu
 parser = argparse.ArgumentParser(description='This is a script which creates fingerprint matrix for specified input signal.')
@@ -34,7 +36,10 @@ def fing_creat(input):
     #wczytywanie pliku
     #input_chunk to zokienkowany sygnał
     input_signal, input_chunk, sampling_rate = wave_to_list(input, window_size=2048)
-
+    data, number_of_frames, channels, sampling_rate, duration = wave_open
+    left_channel, right_channel = windowing(data=data, sampling_rate=sampling_rate,
+                                            channels=channels, window_size=2048, offset=0, to_mono=False,
+                                            fill_zeros=True)
     #to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
 
@@ -43,7 +48,7 @@ def fing_creat(input):
     # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
     #do funkcji przekazany jest okienkowany sygnał
-    fprint.append(zero_crossing_rate(input_chunk=input_chunk))
+    fprint.append(zero_crossing(left_channel, right_channel))
     #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
