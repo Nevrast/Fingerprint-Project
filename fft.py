@@ -1,49 +1,42 @@
 from scipy.fftpack import fft
 import numpy as np
 
-def fft_function(wav_values):
-    param = []
-    for window in wav_values:
-        param.append(fft(np.array(window)))
-    return param
+def fft_function(ch_left, ch_right=None):
+
+    fft_left = np.array([])
+    fft_right = np.array([])
+
+    for window in ch_left:
+        fft_left = np.append(fft_left, fft(window), axis=0)
+
+    # if type(ch_right) == type(ch_left):
+    #     for window in ch_right:
+    #         fft_right = np.append(fft_right, fft(np.array(window)))
+    # else:
+    #     fft_right = -1
+    return fft_left, np.sum(fft_right)
 """
-        input: wav_values
+        input: 
     values ​​of the audio signal under test
         return: param 
     magnitude of the Fourier transform
-
 """
 
-# ---------------TESTS---------------------------
-#wyświetlanie wykresu, by sprawdzić, czy funckja działa poprawnie
-# import wave_to_list_sine_gen
-# import matplotlib.pyplot as plt
-#
-# wave_to_list_sine_gen.sine_generator(50000.0, 1)
-# signal, wav_values_chunks = wave_to_list_sine_gen.wave_to_list("sine_50000.0.wav", False, 44100)
-#
-# y = fft_function(signal)
-#
-# N = len(signal)  # liczba próbek
-# T = 1.0 / 44100  # okres
-#
-# xf = np.linspace(0.0, 1.0 / (2.0 * T), N // 2)  # plot
-# plt.plot(xf, 2.0 / N * np.abs(y[0:N // 2]))
-# plt.show()"""
 
 # ---------------TESTS---------------------------
 #Testowe wywoałanie funkcji
-#import wave_to_list_sine_gen
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+from wave_read import wave_open
+from windowing import windowing
 
-#wave_to_list_sine_gen.sine_generator(50000.0, 1)
-#signal, wav_values_chunks = wave_to_list_sine_gen.wave_to_list("sine_50000.0.wav", False, 44100)
+data, number_of_frames, channels, sampling_rate, duration = wave_open("sine_stereo_1000_44.1kHz.wav")
+windows_l, windows_r = windowing(data, sampling_rate, channels)
 
-#y = fft_function(signal)
+fft_left, fft_right = fft_function(windows_l, windows_r)
+print(fft_left)
+# plt.plot(fft_left[0])
+# plt.show()
 
-#N = len(signal)  # liczba próbek
-#T = 1.0 / 44100  # odległość próbek
 
-#xf = np.linspace(0.0, 1.0 / (2.0 * T), N // 2)  # plot
-#plt.plot(xf, 2.0 / N * np.abs(y[0:N // 2]))
-#plt.show()"""
+
+
