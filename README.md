@@ -10,4 +10,4 @@ If you want to use this project, you need to install Python 3 and following libr
 - **scipy,**
 - **argparse,**
 - **matplotlib,**
-- **skimage** (use the command <em>"pip install scikit-image"<em>).
+- **skimage** (use the command <em>"pip install scikit-image"<em> to install).
