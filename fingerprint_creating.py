@@ -7,7 +7,7 @@ from zcr import zero_crossing
 from energy_spectral_density import energy_spectral_denisity
 from rms import rms
 from spectral_centroid import spectral_centroid
-from oct import octave_fft
+#from oct import octave_fft
 from wave_read import wave_open
 from windowing import windowing
 
@@ -46,14 +46,15 @@ def fing_creat(input):
     # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
     #do funkcji przekazany jest okienkowany sygnał
+    
     fprint.append(zero_crossing(left_channel, right_channel))
     #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
 
-    # fprint.append(energy_spectral_denisity(input_chunk))
-    # if args.debug:
-    #     print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+    fprint.append(energy_spectral_denisity(left_channel, right_channel))
+    if args.debug:
+        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
     #
     # fprint.append(rms(input_chunk))
     # if args.debug:
