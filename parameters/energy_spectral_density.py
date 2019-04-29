@@ -1,17 +1,28 @@
 import numpy as np
 import matplotlib.pyplot as plt
-#import wave_to_list_sine_gen
-#import fft
 
-def energy_spectral_denisity(fft_list):
+def energy_spectral_denisity(left_list, right_list):
     """
-    :param fft_list: array, magnitude of fft
+    :param left_list: array, magnitude of fft in left channel
+    :param right_list: array, magnitude of fft in right channel
     :return: list, values of energy spectral density
     """
-    #wzór na widmową gęstość energii: esp = (fft*sprzęrzenie zespolone fft)/(2*pi)
-    con_fourier=[np.conjugate(values) for values in fft_list] #sprzężenie zespolone transformaty Fouriera
-    esp = np.fft.fftshift([(a*b)/(2*np.pi) for a,b in zip(fft_list,con_fourier)]) #obliczanie widmowej gęstości energii ze wzoru
 
+#lewy kanał
+    #wzór na widmową gęstość energii: esp = (fft*sprzęrzenie zespolone fft)/(2*pi)
+    con_fourier_left = left_list.conjugate() #sprzężenie zespolone transformaty Fouriera
+    esp_left = np.fft.fftshift([(a*b)/(2*np.pi) for a,b in zip(left_list, con_fourier_left)]) #obliczanie widmowej gęstości energii ze wzoru
+
+#prawy kanał
+    #if sprawdza czy w ogóle drugi kanał istnieje
+    if right_list is not None:
+        con_fourier_right = right_list.conjugate()
+        esp_right = np.fft.fftshift([(a*b)/(2*np.pi) for a,b in zip(right_list, con_fourier_right)])
+    #jeśli nie istnieje to też zwraca parametr dla drugiego kanału
+    else:
+        esp_right = 0
+
+#to jeszcze do poprawy
     #--------------TESTS---------------------------
     #wykres wyświetlany, aby sprawdzić, czy funckja liczy właście wartości
     #N = len(wav_values)
@@ -24,7 +35,7 @@ def energy_spectral_denisity(fft_list):
     #plt.grid()
     #plt.show()
     # --------------END-TESTS---------------------------
-    return esp
+    return np.array(esp_left), np.array(esp_right)
 
 #--------------TESTS---------------------------
 #wywoaływanie funkcji, aby sprawdzić, czy funkcja działa poprawnie

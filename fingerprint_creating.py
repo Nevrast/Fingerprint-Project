@@ -2,14 +2,15 @@
 import argparse
 
 #import potrzebnych funkcji
-from wave_to_list import wave_to_list
-from zcr import zero_crossing
-from energy_spectral_density import energy_spectral_denisity
-from rms import rms
-from spectral_centroid import spectral_centroid
-from oct import octave_fft
-from wave_read import wave_open
-from windowing import windowing
+from support_functions.wave_read import wave_open
+from support_functions.windowing import windowing
+from support_functions.wave_to_list import wave_to_list
+
+from parameters.zcr import zero_crossing
+from parameters.energy_spectral_density import energy_spectral_denisity
+#from rms import rms
+#from spectral_centroid import spectral_centroid
+#from oct import octave_fft
 
 #opis skryptu
 parser = argparse.ArgumentParser(description='This is a script which creates fingerprint matrix for specified input signal.')
@@ -34,9 +35,7 @@ if args.output:
 
 def fing_creat(input):
     #wczytywanie pliku
-    #input_chunk to zokienkowany sygnał
-    input_signal, input_chunk, sampling_rate = wave_to_list(input, window_size=2048)
-    data, number_of_frames, channels, sampling_rate, duration = wave_open
+    data, number_of_frames, channels, sampling_rate, duration = wave_open(INPUT_PATH)
     left_channel, right_channel = windowing(data=data, sampling_rate=sampling_rate,
                                             channels=channels, window_size=2048, offset=0, to_mono=False,
                                             fill_zeros=True)
@@ -48,26 +47,27 @@ def fing_creat(input):
     # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
     #do funkcji przekazany jest okienkowany sygnał
+
     fprint.append(zero_crossing(left_channel, right_channel))
     #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
 
-    fprint.append(energy_spectral_denisity(input_chunk))
+    fprint.append(energy_spectral_denisity(left_channel, right_channel))
     if args.debug:
         print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
-
-    fprint.append(rms(input_chunk))
-    if args.debug:
-        print(f"Rms in fprint: {fprint[2]}\n\n")
-
-    fprint.append(spectral_centroid(input_chunk))
-    if args.debug:
-        print(f"Spectral centroid in fprint: {fprint[3]}\n\n")
-
-    fprint.append(octave_fft(input_chunk))
-    if args.debug:
-        print(f"octave_fft in fprint: {fprint[4]}\n\n")
+    #
+    # fprint.append(rms(input_chunk))
+    # if args.debug:
+    #     print(f"Rms in fprint: {fprint[2]}\n\n")
+    #
+    # fprint.append(spectral_centroid(input_chunk))
+    # if args.debug:
+    #     print(f"Spectral centroid in fprint: {fprint[3]}\n\n")
+    #
+    # fprint.append(octave_fft(input_chunk))
+    # if args.debug:
+    #     print(f"octave_fft in fprint: {fprint[4]}\n\n")
 
     #zwraca naszą listę
     return fprint
