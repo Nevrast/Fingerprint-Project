@@ -34,9 +34,7 @@ if args.output:
 
 def fing_creat(input):
     #wczytywanie pliku
-    #input_chunk to zokienkowany sygnał
-    input_signal, input_chunk, sampling_rate = wave_to_list(input, window_size=2048)
-    data, number_of_frames, channels, sampling_rate, duration = wave_open
+    data, number_of_frames, channels, sampling_rate, duration = wave_open(INPUT_PATH)
     left_channel, right_channel = windowing(data=data, sampling_rate=sampling_rate,
                                             channels=channels, window_size=2048, offset=0, to_mono=False,
                                             fill_zeros=True)
@@ -53,21 +51,21 @@ def fing_creat(input):
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
 
-    fprint.append(energy_spectral_denisity(input_chunk))
-    if args.debug:
-        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
-
-    fprint.append(rms(input_chunk))
-    if args.debug:
-        print(f"Rms in fprint: {fprint[2]}\n\n")
-
-    fprint.append(spectral_centroid(input_chunk))
-    if args.debug:
-        print(f"Spectral centroid in fprint: {fprint[3]}\n\n")
-
-    fprint.append(octave_fft(input_chunk))
-    if args.debug:
-        print(f"octave_fft in fprint: {fprint[4]}\n\n")
+    # fprint.append(energy_spectral_denisity(input_chunk))
+    # if args.debug:
+    #     print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+    #
+    # fprint.append(rms(input_chunk))
+    # if args.debug:
+    #     print(f"Rms in fprint: {fprint[2]}\n\n")
+    #
+    # fprint.append(spectral_centroid(input_chunk))
+    # if args.debug:
+    #     print(f"Spectral centroid in fprint: {fprint[3]}\n\n")
+    #
+    # fprint.append(octave_fft(input_chunk))
+    # if args.debug:
+    #     print(f"octave_fft in fprint: {fprint[4]}\n\n")
 
     #zwraca naszą listę
     return fprint
