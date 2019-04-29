@@ -1,26 +1,26 @@
+from scipy.signal import stft
+from windowing import windowing
+from wave_read import wave_open
+import matplotlib.pyplot as plt
 import numpy as np
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
-def stft_bins(input_signal, input_chunk, d=1.0):
-    input_signal = np.array(input_signal)
-    lic = len(input_chunk)
-    Nwindows = input_signal.size // lic
-    t = np.arange(Nwindows) * (lic * d)
-    f = np.fft.rfftfreq(lic, d)
-    return t, f
-print ( stft_bins(input_signal, input_chunk))
+# data, number_of_frames, channels, sampling_rate, duration = wave_open("sine_1000.wav")
+data, number_of_frames, channels, sampling_rate, duration = wave_open("sine_stereo_100.0_44.1kHz.wav")
+left, right = windowing(data,channels=channels, window_size=2048,sampling_rate=sampling_rate, fill_zeros=False)
+f, t, Zxx = stft(left.flatten(), sampling_rate, window='hamming', nperseg=2048)
+# amp = 2 * np.sqrt(2)
+# plt.pcolormesh(t, f, np.abs(Zxx), vmin=0, vmax=amp)
 
-"""
-        Short-time Fourier transform: convert a 1D vector to a 2D array
-        The short-time Fourier transform (STFT) breaks a long vector into disjoint
-        chunks (no overlap) and runs an FFT (Fast Fourier Transform) on each chunk.
-        The resulting 2D array can 
-        Parameters
-        ----------
-        input_signal : array_like
-            Input signal (expected to be real)
-        input_chunk: int
-            Length of each window (chunk of the signal). Should be ≪ `len(input_signal)`.
-        -------
-        out : complex ndarray
-            `len(input_signal) // input_chunk` by `Nfft` complex array representing the STFT of `input_signal`.
-"""
+print(t.shape)
+print(Zxx.shape)
+# Zxx= Zxx.T
+f = f.astype(np.int16)
+print(f[::])
+plt.title('STFT Magnitude')
+plt.plot(f, np.abs(Zxx))
+plt.axis(xmin=0,xmax=1000)
+plt.ylabel('Frequency [Hz]')
+plt.xlabel('Time [sec]')
+plt.show()
