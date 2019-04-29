@@ -7,7 +7,7 @@ def energy_spectral_denisity(left_list, right_list):
     :param right_list: array, magnitude of fft in right channel
     :return: list, values of energy spectral density
     """
-
+#aktualnie to działa źle
 #lewy kanał
     #wzór na widmową gęstość energii: esp = (fft*sprzęrzenie zespolone fft)/(2*pi)
     con_fourier_left = left_list.conjugate() #sprzężenie zespolone transformaty Fouriera

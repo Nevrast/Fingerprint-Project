@@ -1,6 +1,6 @@
 from scipy.signal import stft
-from windowing import windowing
-from wave_read import wave_open
+from .windowing import windowing
+from .wave_read import wave_open
 import matplotlib.pyplot as plt
 import numpy as np
 import sys

@@ -16,27 +16,23 @@ def fft_function(ch_left, ch_right=None):
     #     fft_right = -1
     return fft_left, np.sum(fft_right)
 """
-        input: 
+        input:
     values ​​of the audio signal under test
-        return: param 
+        return: param
     magnitude of the Fourier transform
 """
 
 
 # ---------------TESTS---------------------------
 #Testowe wywoałanie funkcji
-import matplotlib.pyplot as plt
-from .wave_read import wave_open
-from .windowing import windowing
-
-data, number_of_frames, channels, sampling_rate, duration = wave_open("sine_stereo_1000_44.1kHz.wav")
-windows_l, windows_r = windowing(data, sampling_rate, channels)
-
-fft_left, fft_right = fft_function(windows_l, windows_r)
-print(fft_left)
+# import matplotlib.pyplot as plt
+# from .wave_read import wave_open
+# from .windowing import windowing
+#
+# data, number_of_frames, channels, sampling_rate, duration = wave_open("sine_stereo_1000_44.1kHz.wav")
+# windows_l, windows_r = windowing(data, sampling_rate, channels)
+#
+# fft_left, fft_right = fft_function(windows_l, windows_r)
+# print(fft_left)
 # plt.plot(fft_left[0])
 # plt.show()
-
-
-
-

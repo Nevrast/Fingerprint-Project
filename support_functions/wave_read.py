@@ -26,5 +26,3 @@ def wave_open(file_name):
     else:
         raise ValueError("Unsupported number of channels")
     return data, number_of_frames, channels, sampling_rate, duration
-
-
