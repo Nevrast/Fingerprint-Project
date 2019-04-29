@@ -26,8 +26,8 @@ def fft_function(ch_left, ch_right=None):
 # ---------------TESTS---------------------------
 #Testowe wywoałanie funkcji
 import matplotlib.pyplot as plt
-from wave_read import wave_open
-from windowing import windowing
+from .wave_read import wave_open
+from .windowing import windowing
 
 data, number_of_frames, channels, sampling_rate, duration = wave_open("sine_stereo_1000_44.1kHz.wav")
 windows_l, windows_r = windowing(data, sampling_rate, channels)
