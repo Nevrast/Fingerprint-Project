@@ -1,6 +1,6 @@
 import math
-import wave_to_list
-import sine_gen
+import ..support_functions.wave_to_list
+import ..support_functions.sine_gen
 
 
 def rms(input_chunks):

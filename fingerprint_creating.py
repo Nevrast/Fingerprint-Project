@@ -2,12 +2,12 @@
 import argparse
 
 #import potrzebnych funkcji
-from wave_read import wave_open
-from windowing import windowing
-from wave_to_list import wave_to_list
+from support_functions.wave_read import wave_open
+from support_functions.windowing import windowing
+from support_functions.wave_to_list import wave_to_list
 
-from zcr import zero_crossing
-from energy_spectral_density import energy_spectral_denisity
+from parameters.zcr import zero_crossing
+from parameters.energy_spectral_density import energy_spectral_denisity
 #from rms import rms
 #from spectral_centroid import spectral_centroid
 #from oct import octave_fft

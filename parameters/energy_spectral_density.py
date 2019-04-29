@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-#import wave_to_list_sine_gen
-#import fft
 
 def energy_spectral_denisity(left_list, right_list):
     """
