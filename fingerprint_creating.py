@@ -2,14 +2,15 @@
 import argparse
 
 #import potrzebnych funkcji
-from wave_to_list import wave_to_list
-from zcr import zero_crossing
-from energy_spectral_density import energy_spectral_denisity
-from rms import rms
-from spectral_centroid import spectral_centroid
-#from oct import octave_fft
 from wave_read import wave_open
 from windowing import windowing
+from wave_to_list import wave_to_list
+
+from zcr import zero_crossing
+from energy_spectral_density import energy_spectral_denisity
+#from rms import rms
+#from spectral_centroid import spectral_centroid
+#from oct import octave_fft
 
 #opis skryptu
 parser = argparse.ArgumentParser(description='This is a script which creates fingerprint matrix for specified input signal.')
@@ -46,7 +47,7 @@ def fing_creat(input):
     # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
     #do funkcji przekazany jest okienkowany sygnał
-    
+
     fprint.append(zero_crossing(left_channel, right_channel))
     #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
     if args.debug:
