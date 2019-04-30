@@ -5,6 +5,7 @@ import argparse
 from support_functions.wave_read import wave_open
 from support_functions.windowing import windowing
 from support_functions.wave_to_list import wave_to_list
+from scipy.signal import stft
 
 from parameters.zcr import zero_crossing
 from parameters.energy_spectral_density import energy_spectral_denisity
@@ -39,6 +40,12 @@ def fing_creat(input):
     left_channel, right_channel = windowing(data=data, sampling_rate=sampling_rate,
                                             channels=channels, window_size=2048, offset=0, to_mono=False,
                                             fill_zeros=True)
+    #freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
+    #time_bin to czasowe pozycje kolejnych okienek
+    #magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
+    #okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
+    freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hamming',
+                                          nperseg=1024, noverlap=None)
     #to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
 
