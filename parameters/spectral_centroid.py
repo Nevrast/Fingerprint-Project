@@ -1,17 +1,26 @@
 import numpy as np
-import librosa
 
 
-def spectral_centroid(input_chunk, samplerate=44100):
+def spectral_centroid(magnitudes, freq_bin):
     """
-    :param input_chunk: list2D, waveform split into chunks
-    :param samplerate: int, samplerate of signal
-    :return: array of lists with spectral centroids over time
+    :param:
     """
-    param = []
-    for i in range(len(input_chunk)):
-        sc = librosa.feature.spectral_centroid(np.array(input_chunk[i]), sr=samplerate)
-        sc = sc.tolist()
-        param.append(sc[0])
-    return np.array(param)
+    sc_left = np.array([])
+    sc_right = np.array([])
+    if len(magnitudes.shape) == 2:
+        for window in magnitudes.T:
+            sc = np.sum(np.abs(window)*freq_bin) / np.sum(np.abs(window))
+            sc_left = np.append(sc_left, sc)
+        sc_right = -1
 
+    elif len(magnitudes.shape) == 3:
+        for window in magnitudes[0].T:
+            sc = np.sum(np.abs(window)*freq_bin) / np.sum(np.abs(window))
+            sc_left = np.append(sc_left, sc)
+        for window in magnitudes[1].T:
+            sc = np.sum(np.abs(window)*freq_bin) / np.sum(np.abs(window))
+            sc_right = np.append(sc_right, sc)
+    else:
+        raise ValueError("Input is not supported")
+
+    return sc_left, sc_right
