@@ -3,8 +3,13 @@ import numpy as np
 
 def spectral_centroid(magnitudes, freq_bin):
     """
-    :param:
+    :param magnitudes: array, complex values of each freqnecy bin
+    :param freq_bin: array, freqnecy bin
+    :returns: sc_left - array, spectral centroid of left channel for each window
+              sc_right - array, spectral centroid of right channel for each window
+                         if file is mono returns -1
     """
+
     sc_left = np.array([])
     sc_right = np.array([])
     if len(magnitudes.shape) == 2:
