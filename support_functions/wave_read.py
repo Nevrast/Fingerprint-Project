@@ -18,6 +18,7 @@ def wave_open(file_name):
 
     if channels == 1:
         data = np.array(data, dtype=np.int16)
+
     elif channels == 2:
         left = np.array(data[0::2], dtype=np.int16)
         right = np.array(data[1::2], dtype=np.int16)
@@ -25,4 +26,7 @@ def wave_open(file_name):
 
     else:
         raise ValueError("Unsupported number of channels")
+
+    data = np.divide(data, np.iinfo(np.int16).max + 1)
+
     return data, number_of_frames, channels, sampling_rate, duration
