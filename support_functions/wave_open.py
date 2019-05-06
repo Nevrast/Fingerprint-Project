@@ -3,7 +3,7 @@ import struct
 import numpy as np
 
 
-def wave_open(file_name):
+def wave_open(file_name, normalize=True, rm_constant=False):
     wave_file = wave.open(file_name, 'rb')
 
     number_of_frames = wave_file.getnframes()
@@ -27,6 +27,14 @@ def wave_open(file_name):
     else:
         raise ValueError("Unsupported number of channels")
 
-    data = np.divide(data, np.iinfo(np.int16).max + 1)
+    if normalize:
+        data = np.divide(data, np.iinfo(np.int16).max + 1)
+
+    if rm_constant and channels == 1:
+        data = data - np.sum(data) / number_of_frames
+
+    elif rm_constant and channels == 2:
+        data[0] = data[0] - np.sum(data[0]) / number_of_frames
+        data[1] = data[1] - np.sum(data[1]) / number_of_frames
 
     return data, number_of_frames, channels, sampling_rate, duration
