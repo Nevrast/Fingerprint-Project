@@ -4,7 +4,6 @@ import argparse
 #import potrzebnych funkcji
 from support_functions.wave_read import wave_open
 from support_functions.windowing import windowing
-from support_functions.wave_to_list import wave_to_list
 from scipy.signal import stft
 
 from parameters.zcr import zero_crossing
