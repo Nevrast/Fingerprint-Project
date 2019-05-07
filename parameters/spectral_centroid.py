@@ -58,6 +58,10 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
     """
 
     time = np.linspace(0, duration, duration * sampling_rate)
+
+    fig = plt.figure(1)
+    fig.canvas.set_window_title('Spectral Centroid')
+
     if type(sc_right) != type(sc_left):
         plot, plot_mono = plt.subplots()
         plot_mono.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label="Spectral Centroid")
@@ -120,5 +124,6 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_both.legend(loc='upper left')
 
         plt.subplots_adjust(wspace=0.25)
-    plt.suptitle('Spectral Centroid')
-    plt.show()
+    plt.suptitle('Spectral Centroid', fontsize=16)
+
+

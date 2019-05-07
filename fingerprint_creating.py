@@ -5,11 +5,12 @@ import argparse
 from support_functions.wave_open import wave_open
 from support_functions.windowing import windowing
 
+import matplotlib.pyplot as plt
 from scipy.signal import stft
 
 from parameters.zcr import zero_crossing
 from parameters.energy_spectral_density import energy_spectral_denisity
-from parameters.spectral_flatness import spectral_flatness
+from parameters.spectral_flatness import spectral_flatness, spectral_flatness_debug
 from parameters.spectral_centroid import spectral_centroid, spectral_centroid_debug
 from parameters.rms import rms
 
@@ -72,16 +73,21 @@ def fing_creat(input):
         print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
         spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
                                 data=data, time_bin=time_bin)
-
-    fprint.append(spectral_flatness(magnitudes=magnitudes))
+    sf_left, sf_right = spectral_flatness(magnitudes=magnitudes)
+    fprint.append([sf_left, sf_right])
     if args.debug:
         print(f"Spectral flatness in fprint: {fprint[3]}\n\n")
+        spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
+                                sampling_rate=sampling_rate, data=data)
 
     #
     # fprint.append(octave_fft(input_chunk))
     # if args.debug:
     #     print(f"octave_fft in fprint: {fprint[4]}\n\n")
-
+    # jeśli jesteśmy w trybie -d trzeba wyświetlić też wykresy, plt.show() powinien być wywoływany tylko raz
+    # dlatego znajduje się tutaj po więcej informacji polecam https://matplotlib.org/faq/howto_faq.html#use-show
+    if args.debug:
+        plt.show()
     #zwraca naszą listę
     return fprint
 
