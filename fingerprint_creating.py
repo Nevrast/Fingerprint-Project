@@ -46,7 +46,7 @@ def fing_creat(input):
     #time_bin to czasowe pozycje kolejnych okienek
     #magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
     #okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
-    freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hamming',
+    freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hann',
                                           nperseg=1024, noverlap=None)
     #to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
@@ -66,7 +66,7 @@ def fing_creat(input):
     if args.debug:
         print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
-    fprint.append(spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin))
+    fprint.append(spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin, time_bin=time_bin, debug=args.debug))
     if args.debug:
         print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
 
