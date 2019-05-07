@@ -10,7 +10,7 @@ from scipy.signal import stft
 from parameters.zcr import zero_crossing
 from parameters.energy_spectral_density import energy_spectral_denisity
 from parameters.spectral_flatness import spectral_flatness
-from parameters.spectral_centroid import spectral_centroid
+from parameters.spectral_centroid import spectral_centroid, spectral_centroid_debug
 from parameters.rms import rms
 
 
@@ -66,13 +66,17 @@ def fing_creat(input):
     if args.debug:
         print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
-    fprint.append(spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin, time_bin=time_bin, debug=args.debug))
+    sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
+    fprint.append([sc_left, sc_right])
     if args.debug:
         print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
+        spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
+                                data=data, time_bin=time_bin)
 
     fprint.append(spectral_flatness(magnitudes=magnitudes))
     if args.debug:
         print(f"Spectral flatness in fprint: {fprint[3]}\n\n")
+
     #
     # fprint.append(octave_fft(input_chunk))
     # if args.debug:
