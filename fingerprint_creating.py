@@ -38,7 +38,7 @@ if args.output:
 
 def fing_creat(input):
     #wczytywanie pliku
-    data, number_of_frames, channels, sampling_rate, duration = wave_open(INPUT_PATH, normalize=True, rm_constant=True)
+    data, number_of_frames, channels, sampling_rate, duration = wave_open(input, normalize=True, rm_constant=True)
     left_channel, right_channel = windowing(data=data, sampling_rate=sampling_rate,
                                             channels=channels, window_size=2048, offset=0, to_mono=False,
                                             fill_zeros=True)
@@ -48,6 +48,7 @@ def fing_creat(input):
     #okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
     freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hamming',
                                           nperseg=1024, noverlap=None)
+
     #to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
 
