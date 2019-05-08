@@ -65,6 +65,7 @@ def spectral_flatness_debug(sf_left, sf_right, time_bin, duration, sampling_rate
         plot_mono.minorticks_on()
         plot_mono.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_mono.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
+        plot_mono.set_xlim(left=-1, right=time_bin[-1] + 1)
         plot_mono.legend(loc='lower left', bbox_to_anchor=(0., 1.))
 
     else:
@@ -79,6 +80,7 @@ def spectral_flatness_debug(sf_left, sf_right, time_bin, duration, sampling_rate
         plot_l.minorticks_on()
         plot_l.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_l.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
+        plot_l.set_xlim(left=-1, right=time_bin[-1] + 1)
         plot_signal_l = plot_l.twinx()
         plot_signal_l.plot(time, data[0].flat, color='#c6c6c6', linewidth=0.4, label="Signal")
         plot_signal_l.set_ylabel('Normalized amplitude')
@@ -94,6 +96,7 @@ def spectral_flatness_debug(sf_left, sf_right, time_bin, duration, sampling_rate
         plot_r.minorticks_on()
         plot_r.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_r.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)
+        plot_r.set_xlim(left=-1, right=time_bin[-1] + 1)
         plot_signal_r = plot_r.twinx()
         plot_signal_r.plot(time, data[1].flat, color='#c6c6c6', linewidth=0.4, label='Signal')
         plot_signal_r.set_ylabel('Normalized amplitude')
@@ -110,6 +113,7 @@ def spectral_flatness_debug(sf_left, sf_right, time_bin, duration, sampling_rate
         plot_both.minorticks_on()
         plot_both.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_both.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
+        plot_both.set_xlim(left=-1, right=time_bin[-1] + 1)
         plot_both.legend(loc='upper left')
 
         plt.subplots_adjust(wspace=0.25)

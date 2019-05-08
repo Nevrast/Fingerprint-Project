@@ -41,4 +41,9 @@ def windowing(data, sampling_rate, channels, window_size=2048, offset=0, to_mono
 # większa ilość kanałów nie jest narazie obsługiwana
     else:
         raise ValueError("Unsupported shape of wave file.")
-    return windows_l, windows_r
+
+    time_bin = np.array([])
+    for i in range(len(windows_l)):
+        time_bin = np.append(time_bin, i * window_size / sampling_rate)
+
+    return windows_l, windows_r, time_bin
