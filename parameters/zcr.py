@@ -62,7 +62,7 @@ def zero_crossing_debug(zc_left, zc_right, time_bin, duration, sampling_rate, da
         plot_mono.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
         plot_mono.set_xlim(left=-1, right=time_bin[-1] + 1)
         plot_signal_mono = plot_mono.twinx()
-        plot_signal_mono.plot(time, data.flat, color='#c6c6c6', linewidth=0.4, label="Signal")
+        plot_signal_mono.plot(time, data, color='#c6c6c6', linewidth=0.4, label="Signal")
         plot_signal_mono.set_ylabel('Normalized amplitude')
         plot_mono.set_zorder(plot_signal_mono.get_zorder() + 1)
         plot_mono.patch.set_visible(False)

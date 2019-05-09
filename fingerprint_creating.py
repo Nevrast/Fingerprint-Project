@@ -16,7 +16,6 @@ from parameters.spectral_centroid import spectral_centroid, spectral_centroid_de
 from parameters.rms import rms
 
 
-
 #opis skryptu
 parser = argparse.ArgumentParser(description='This is a script which creates fingerprint matrix for specified input signal.')
 #obowiązkowy argument dla wejściowego pliku
@@ -27,7 +26,7 @@ parser.add_argument("-o", "--output", help = "- output file")
 parser.add_argument("-d", "--debug", help = "- debugging mode, this argument is called without any value", default = False, action = 'store_true')
 
 #rozpakowanie parsera
-args =parser.parse_args()
+args = parser.parse_args()
 #wyświetla nazwy plików wejściowego i wyjściowego tylko w trybie debug
 if args.debug:
     print("Input file: ", args.input)
@@ -38,17 +37,22 @@ if args.output:
         print("Output file:", args.output)
     OUTPUT_PATH = args.output
 
+
 def fing_creat(input):
     #wczytywanie pliku
-    data, number_of_frames, channels, sampling_rate, duration= wave_open(INPUT_PATH, normalize=True, rm_constant=True)
-    left_channel, right_channel, w_time_bin = windowing(data=data, sampling_rate=sampling_rate,channels=channels,
-                                                       window_size=1024, offset=0, to_mono=False, fill_zeros=True)
+    window_size = 1024
+    offset = 512
+    data, number_of_frames, channels, sampling_rate, duration = wave_open(INPUT_PATH, normalize=True, rm_constant=True)
+    left_channel, right_channel, w_time_bin = windowing(data=data, sampling_rate=sampling_rate, channels=channels,
+                                                        window_size=window_size, offset=offset, to_mono=False,
+                                                        fill_zeros=True)
+
     #freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
     #time_bin to czasowe pozycje kolejnych okienek
     #magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
     #okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
     freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hann',
-                                          nperseg=1024, noverlap=None)
+                                          nperseg=window_size, noverlap=offset, boundary=None)
     #to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
 
