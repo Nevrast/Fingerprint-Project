@@ -40,19 +40,22 @@ if args.output:
 
 def fing_creat(input):
     #wczytywanie pliku
+
     window_size = 1024
     offset = 512
     data, number_of_frames, channels, sampling_rate, duration = wave_open(INPUT_PATH, normalize=True, rm_constant=True)
     left_channel, right_channel, w_time_bin = windowing(data=data, sampling_rate=sampling_rate, channels=channels,
                                                         window_size=window_size, offset=offset, to_mono=False,
                                                         fill_zeros=True)
-
+    
     #freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
     #time_bin to czasowe pozycje kolejnych okienek
     #magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
     #okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
+
     freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hann',
                                           nperseg=window_size, noverlap=offset, boundary=None)
+
     #to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
 
@@ -66,11 +69,14 @@ def fing_creat(input):
     #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
+        pg-debug-plots
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
-    fprint.append(energy_spectral_denisity(left_channel, right_channel))
-    if args.debug:
-        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+
+    # fprint.append(energy_spectral_denisity(left_channel, right_channel))
+    # if args.debug:
+    #     print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
     fprint.append(np.array([sc_left, sc_right]))
