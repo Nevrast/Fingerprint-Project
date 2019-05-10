@@ -47,7 +47,7 @@ def fing_creat(input):
     left_channel, right_channel, w_time_bin = windowing(data=data, sampling_rate=sampling_rate, channels=channels,
                                                         window_size=window_size, offset=offset, to_mono=False,
                                                         fill_zeros=True)
-    
+
     #freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
     #time_bin to czasowe pozycje kolejnych okienek
     #magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
@@ -69,13 +69,14 @@ def fing_creat(input):
     #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
-        pg-debug-plots
+        #pg-debug-plots
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
 
-    # fprint.append(energy_spectral_denisity(left_channel, right_channel))
-    # if args.debug:
-    #     print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+    esd_left, esd_right = energy_spectral_denisity(magnitudes)
+    fprint.append([esd_left, esd_right])
+    if args.debug:
+        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
