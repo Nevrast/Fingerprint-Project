@@ -5,14 +5,15 @@ import argparse
 from support_functions.wave_open import wave_open
 from support_functions.windowing import windowing
 
+import numpy as np
+import matplotlib.pyplot as plt
 from scipy.signal import stft
 
-from parameters.zcr import zero_crossing
+from parameters.zcr import zero_crossing, zero_crossing_debug
 from parameters.energy_spectral_density import energy_spectral_denisity
-from parameters.spectral_flatness import spectral_flatness
-from parameters.spectral_centroid import spectral_centroid
+from parameters.spectral_flatness import spectral_flatness, spectral_flatness_debug
+from parameters.spectral_centroid import spectral_centroid, spectral_centroid_debug
 from parameters.rms import rms
-
 
 
 #opis skryptu
@@ -25,7 +26,7 @@ parser.add_argument("-o", "--output", help = "- output file")
 parser.add_argument("-d", "--debug", help = "- debugging mode, this argument is called without any value", default = False, action = 'store_true')
 
 #rozpakowanie parsera
-args =parser.parse_args()
+args = parser.parse_args()
 #wyświetla nazwy plików wejściowego i wyjściowego tylko w trybie debug
 if args.debug:
     print("Input file: ", args.input)
@@ -36,18 +37,24 @@ if args.output:
         print("Output file:", args.output)
     OUTPUT_PATH = args.output
 
+
 def fing_creat(input):
     #wczytywanie pliku
-    data, number_of_frames, channels, sampling_rate, duration = wave_open(input, normalize=True, rm_constant=True)
-    left_channel, right_channel = windowing(data=data, sampling_rate=sampling_rate,
-                                            channels=channels, window_size=2048, offset=0, to_mono=False,
-                                            fill_zeros=True)
+
+    window_size = 1024
+    offset = 512
+    data, number_of_frames, channels, sampling_rate, duration = wave_open(INPUT_PATH, normalize=True, rm_constant=True)
+    left_channel, right_channel, w_time_bin = windowing(data=data, sampling_rate=sampling_rate, channels=channels,
+                                                        window_size=window_size, offset=offset, to_mono=False,
+                                                        fill_zeros=True)
+    
     #freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
     #time_bin to czasowe pozycje kolejnych okienek
     #magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
     #okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
-    freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hamming',
-                                          nperseg=1024, noverlap=None)
+
+    freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hann',
+                                          nperseg=window_size, noverlap=offset, boundary=None)
 
     #to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
@@ -57,28 +64,42 @@ def fing_creat(input):
     # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
     #do funkcji przekazany jest okienkowany sygnał
-
-    fprint.append(zero_crossing(left_channel, right_channel))
+    zc_left, zc_right = zero_crossing(left_channel, right_channel)
+    fprint.append(np.array([zc_left, zc_right]))
     #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
+        pg-debug-plots
+        zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
+                            sampling_rate=sampling_rate, data=data)
 
     # fprint.append(energy_spectral_denisity(left_channel, right_channel))
     # if args.debug:
     #     print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
-    fprint.append(spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin))
+
+    sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
+    fprint.append(np.array([sc_left, sc_right]))
     if args.debug:
         print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
+        spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
+                                data=data, time_bin=time_bin)
 
-    fprint.append(spectral_flatness(magnitudes=magnitudes))
+    sf_left, sf_right = spectral_flatness(magnitudes=magnitudes)
+    fprint.append(np.array([sf_left, sf_right]))
     if args.debug:
         print(f"Spectral flatness in fprint: {fprint[3]}\n\n")
+        spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
+                                sampling_rate=sampling_rate, data=data)
+
     #
     # fprint.append(octave_fft(input_chunk))
     # if args.debug:
     #     print(f"octave_fft in fprint: {fprint[4]}\n\n")
-
+    # jeśli jesteśmy w trybie -d trzeba wyświetlić też wykresy, plt.show() powinien być wywoływany tylko raz
+    # dlatego znajduje się tutaj po więcej informacji polecam https://matplotlib.org/faq/howto_faq.html#use-show
+    if args.debug:
+        plt.show()
     #zwraca naszą listę
     return fprint
 
