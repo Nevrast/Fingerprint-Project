@@ -80,8 +80,6 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_signal_mono.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
     else:
-        # fig = plt.figure(1)
-        # fig.canvas.set_window_title('Spectral Centroid')
         plot_l = plt.subplot2grid((2, 2), (0, 0))
         plot_r = plt.subplot2grid((2, 2), (0, 1))
         plot_both = plt.subplot2grid((2, 2), (1, 0), colspan=2)
