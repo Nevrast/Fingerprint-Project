@@ -63,7 +63,7 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
     fig.canvas.set_window_title('Spectral Centroid')
 
     if type(sc_right) != type(sc_left):
-        plot, plot_mono = plt.subplots()
+        plot_mono = plt.subplot2grid((1, 1), (0, 0))
         plot_mono.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label="Spectral Centroid")
         plot_mono.set_xlabel('Time [s]')
         plot_mono.set_ylabel('Centroid [Hz]')
@@ -80,6 +80,8 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_signal_mono.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
     else:
+        # fig = plt.figure(1)
+        # fig.canvas.set_window_title('Spectral Centroid')
         plot_l = plt.subplot2grid((2, 2), (0, 0))
         plot_r = plt.subplot2grid((2, 2), (0, 1))
         plot_both = plt.subplot2grid((2, 2), (1, 0), colspan=2)

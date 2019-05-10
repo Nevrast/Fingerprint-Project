@@ -57,16 +57,21 @@ def spectral_flatness_debug(sf_left, sf_right, time_bin, duration, sampling_rate
     fig.canvas.set_window_title('Spectral Flatness')
 
     if type(sf_right) != type(sf_left):
-        plot, plot_mono = plt.subplots()
-        plot_mono.plot(time, data.flat, color='#c6c6c6', linewidth=0.4, label="Signal")
-        plot_mono.plot(time_bin, sf_left, color='#23108f', linewidth=0.8, label="Spectral Centroid")
+        plot_mono = plt.subplot2grid((1, 1), (0, 0))
+        plot_mono.plot(time_bin, sf_left, color='#23108f', linewidth=0.8, label="Spectral Flatness")
         plot_mono.set_xlabel('Time [s]')
-        plot_mono.set_ylabel('Spectral flatness, normalized amplitudes')
+        plot_mono.set_ylabel('Spectral Flatness')
         plot_mono.minorticks_on()
         plot_mono.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_mono.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
         plot_mono.set_xlim(left=-1, right=time_bin[-1] + 1)
+        plot_signal_mono = plot_mono.twinx()
+        plot_signal_mono.plot(time, data, color='#c6c6c6', linewidth=0.4, label="Signal")
+        plot_signal_mono.set_ylabel('Normalized amplitude')
+        plot_mono.set_zorder(plot_signal_mono.get_zorder() + 1)
+        plot_mono.patch.set_visible(False)
         plot_mono.legend(loc='lower left', bbox_to_anchor=(0., 1.))
+        plot_signal_mono.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
     else:
         plot_l = plt.subplot2grid((2, 2), (0, 0))

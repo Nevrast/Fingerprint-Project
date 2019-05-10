@@ -53,7 +53,7 @@ def zero_crossing_debug(zc_left, zc_right, time_bin, duration, sampling_rate, da
     fig.canvas.set_window_title('Zero Crossing')
 
     if type(zc_right) != type(zc_left):
-        plot, plot_mono = plt.subplots()
+        plot_mono = plt.subplot2grid((1, 1), (0, 0))
         plot_mono.plot(time_bin, zc_left, color='#23108f', linewidth=0.8, label="Spectral Centroid")
         plot_mono.set_xlabel('Time [s]')
         plot_mono.set_ylabel('Centroid [Hz]')
