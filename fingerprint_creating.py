@@ -63,9 +63,9 @@ def fing_creat(input):
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
 
-    # fprint.append(energy_spectral_denisity(left_channel, right_channel))
-    # if args.debug:
-    #     print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+    fprint.append(energy_spectral_denisity(magnitudes))
+    if args.debug:
+        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
     fprint.append(spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin))
     if args.debug:
