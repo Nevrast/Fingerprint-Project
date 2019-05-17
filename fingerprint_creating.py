@@ -1,5 +1,6 @@
 #moduł potrzebny do obsługi linii poleceń
 import argparse
+import sys
 
 #import potrzebnych funkcji
 from support_functions.wave_open import wave_open
@@ -13,8 +14,8 @@ from parameters.zcr import zero_crossing, zero_crossing_debug
 from parameters.energy_spectral_density import energy_spectral_denisity
 from parameters.spectral_flatness import spectral_flatness, spectral_flatness_debug
 from parameters.spectral_centroid import spectral_centroid, spectral_centroid_debug
-from parameters.rms import rms
-
+from parameters.rms import rms, rms_debug
+# np.set_printoptions(threshold=sys.maxsize)
 
 #opis skryptu
 parser = argparse.ArgumentParser(description='This is a script which creates fingerprint matrix for specified input signal.')
@@ -75,32 +76,30 @@ def fing_creat(input):
 
     esd_left, esd_right = energy_spectral_denisity(magnitudes)
     fprint.append([esd_left, esd_right])
-    # if args.debug:
-        # print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+    if args.debug:
+        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
     fprint.append(np.array([sc_left, sc_right]))
-    # if args.debug:
-        # print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
-        # spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
-        #                         data=data, time_bin=time_bin)
+    if args.debug:
+        print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
+        spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
+                                data=data, time_bin=time_bin)
 
     sf_left, sf_right = spectral_flatness(magnitudes=magnitudes)
     fprint.append(np.array([sf_left, sf_right]))
-    # if args.debug:
-        # print(f"Spectral flatness in fprint: {fprint[3]}\n\n")
-        # spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
-        #                         sampling_rate=sampling_rate, data=data)
+    if args.debug:
+        print(f"Spectral flatness in fprint: {fprint[3]}\n\n")
+        spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
+                                sampling_rate=sampling_rate, data=data)
 
     rms_left, rms_right = rms(left_channel=left_channel, right_channel=right_channel)
     fprint.append(np.array([rms_left, rms_right]))
-    if arg.debug:
+    if args.debug:
         print(f'RMS in fprint: {fprint[4]}\n\n')
-    #
-    # fprint.append(octave_fft(input_chunk))
-    # if args.debug:
-    #     print(f"octave_fft in fprint: {fprint[4]}\n\n")
+        rms_debug(rms_left=rms_left, rms_right=rms_right, time_bin=w_time_bin, duration=duration,
+                  sampling_rate=sampling_rate, data=data)
     # jeśli jesteśmy w trybie -d trzeba wyświetlić też wykresy, plt.show() powinien być wywoływany tylko raz
     # dlatego znajduje się tutaj po więcej informacji polecam https://matplotlib.org/faq/howto_faq.html#use-show
     if args.debug:
