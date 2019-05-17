@@ -75,24 +75,28 @@ def fing_creat(input):
 
     esd_left, esd_right = energy_spectral_denisity(magnitudes)
     fprint.append([esd_left, esd_right])
-    if args.debug:
-        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+    # if args.debug:
+        # print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
     fprint.append(np.array([sc_left, sc_right]))
-    if args.debug:
-        print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
-        spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
-                                data=data, time_bin=time_bin)
+    # if args.debug:
+        # print(f"Spectral centroid in fprint: {fprint[2]}\n\n")
+        # spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
+        #                         data=data, time_bin=time_bin)
 
     sf_left, sf_right = spectral_flatness(magnitudes=magnitudes)
     fprint.append(np.array([sf_left, sf_right]))
-    if args.debug:
-        print(f"Spectral flatness in fprint: {fprint[3]}\n\n")
-        spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
-                                sampling_rate=sampling_rate, data=data)
+    # if args.debug:
+        # print(f"Spectral flatness in fprint: {fprint[3]}\n\n")
+        # spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
+        #                         sampling_rate=sampling_rate, data=data)
 
+    rms_left, rms_right = rms(left_channel=left_channel, right_channel=right_channel)
+    fprint.append(np.array([rms_left, rms_right]))
+    if arg.debug:
+        print(f'RMS in fprint: {fprint[4]}\n\n')
     #
     # fprint.append(octave_fft(input_chunk))
     # if args.debug:
