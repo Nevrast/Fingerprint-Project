@@ -54,7 +54,7 @@ def zero_crossing_debug(zc_left, zc_right, time_bin, duration, sampling_rate, da
 
     if type(zc_right) != type(zc_left):
         plot_mono = plt.subplot2grid((1, 1), (0, 0))
-        plot_mono.plot(time_bin, zc_left, color='#23108f', linewidth=0.8, label="Spectral Centroid")
+        plot_mono.plot(time_bin, zc_left, color='#23108f', linewidth=0.8, label='Zero Crossing')
         plot_mono.set_xlabel('Time [s]')
         plot_mono.set_ylabel('Centroid [Hz]')
         plot_mono.minorticks_on()
@@ -83,7 +83,7 @@ def zero_crossing_debug(zc_left, zc_right, time_bin, duration, sampling_rate, da
         plot_l.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
         plot_l.set_xlim(left=-1, right=time_bin[-1] + 1)
         plot_signal_l = plot_l.twinx()
-        plot_signal_l.plot(time, data[0].flat, color='#c6c6c6', linewidth=0.4, label="Signal")
+        plot_signal_l.plot(time, data[0].flat, color='#c6c6c6', linewidth=0.4, label='Signal')
         plot_signal_l.set_ylabel('Normalized amplitude')
         plot_l.set_zorder(plot_signal_l.get_zorder() + 1)
         plot_l.patch.set_visible(False)
