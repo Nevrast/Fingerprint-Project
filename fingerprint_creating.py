@@ -1,6 +1,6 @@
 #moduł potrzebny do obsługi linii poleceń
 import argparse
-import sys
+
 
 #import potrzebnych funkcji
 from support_functions.wave_open import wave_open
@@ -16,20 +16,23 @@ from parameters.spectral_flatness import spectral_flatness, spectral_flatness_de
 from parameters.spectral_centroid import spectral_centroid, spectral_centroid_debug
 from parameters.rms import rms, rms_debug
 from parameters.spectral_roll_off import roll_off, roll_off_debug
+# gdy chcemy pokazać wszystkie dane macierzy numpy należy odkomentować poniższe dwie linijki
+# import sys
 # np.set_printoptions(threshold=sys.maxsize)
 
-#opis skryptu
+# opis skryptu
 parser = argparse.ArgumentParser(description='This is a script which creates fingerprint matrix for specified input signal.')
-#obowiązkowy argument dla wejściowego pliku
-parser.add_argument("input", help = "- input signal")
-#opcjonalny argument dla pliku wyjściowego
-parser.add_argument("-o", "--output", help = "- output file")
-#aby wywołać tryb debugujący należy wywołać tylko flagę -d bez żadnej wartości
-parser.add_argument("-d", "--debug", help = "- debugging mode, this argument is called without any value", default = False, action = 'store_true')
+# obowiązkowy argument dla wejściowego pliku
+parser.add_argument("input", help="- input signal")
+# opcjonalny argument dla pliku wyjściowego
+parser.add_argument("-o", "--output", help="- output file")
+# aby wywołać tryb debugujący należy wywołać tylko flagę -d bez żadnej wartości
+parser.add_argument("-d", "--debug", help="- debugging mode, this argument is called without any value",
+                    default=False, action='store_true')
 
-#rozpakowanie parsera
+# rozpakowanie parsera
 args = parser.parse_args()
-#wyświetla nazwy plików wejściowego i wyjściowego tylko w trybie debug
+# wyświetla nazwy plików wejściowego i wyjściowego tylko w trybie debug
 if args.debug:
     print("Input file: ", args.input)
 INPUT_PATH = args.input
@@ -41,7 +44,7 @@ if args.output:
 
 
 def fing_creat(input):
-    #wczytywanie pliku
+    # wczytywanie pliku
 
     window_size = 1024
     offset = 512
@@ -50,36 +53,36 @@ def fing_creat(input):
                                                         window_size=window_size, offset=offset, to_mono=False,
                                                         fill_zeros=True)
 
-    #freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
-    #time_bin to czasowe pozycje kolejnych okienek
-    #magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
-    #okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
+    # freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
+    # time_bin to czasowe pozycje kolejnych okienek
+    # magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
+    # okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
 
-    freq_bin, time_bin, magnitudes = stft(data, fs=sampling_rate, window='hann',
+    freq_bin, time_bin, magnitudes = stft(x=data, fs=sampling_rate, window='hann',
                                           nperseg=window_size, noverlap=offset, boundary=None)
 
-    #to jest lista, do której zapisywane będą wszystkie parametry
+    # to jest lista, do której zapisywane będą wszystkie parametry
     fprint = []
 
     # dodawanie kolejnych parametrów do listy
     # nazwy funkcji powinny być nazwą parametru
     # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
-    #do funkcji przekazany jest okienkowany sygnał
-    zc_left, zc_right = zero_crossing(left_channel, right_channel)
+    # do funkcji przekazany jest okienkowany sygnał
+    zc_left, zc_right = zero_crossing(ch_left=left_channel, ch_right=right_channel)
     fprint.append(np.array([zc_left, zc_right]))
-    #jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania, więc wypisze wszystkie argumenty na ekran
+    # jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania,
+    # więc wypisze wszystkie argumenty na ekran
     if args.debug:
         print(f"Zero_crossing_rate in fprint: {fprint[0]}\n\n")
         #pg-debug-plots
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
 
-    esd_left, esd_right = energy_spectral_denisity(magnitudes)
+    esd_left, esd_right = energy_spectral_denisity(magnitudes=magnitudes)
     fprint.append([esd_left, esd_right])
     if args.debug:
         print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
-
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
     fprint.append(np.array([sc_left, sc_right]))
@@ -112,8 +115,9 @@ def fing_creat(input):
     # dlatego znajduje się tutaj po więcej informacji polecam https://matplotlib.org/faq/howto_faq.html#use-show
     if args.debug:
         plt.show()
-    #zwraca naszą listę
+    # zwraca naszą listę
     return fprint
+
 
 def fing_save(fingerprint, output):
     if args.debug:
@@ -124,6 +128,7 @@ def fing_save(fingerprint, output):
     file.close()
     if args.debug:
         print("Saving to file finished.")
+
 
 #wywołanie funkcji i przypisanie do zmiennej new_fingerprint
 new_fingerprint = fing_creat(INPUT_PATH)
