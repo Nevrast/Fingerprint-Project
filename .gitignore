@@ -3,6 +3,8 @@ sine_200.wav
 guitar.wav
 kjk.wav
 Recording.wav
+sine_stereo_10.0_0.05kHz.wav
+sine_stereo_100.0_44.1kHz.wav
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
