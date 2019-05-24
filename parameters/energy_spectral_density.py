@@ -8,7 +8,6 @@ def energy_spectral_denisity(magnitudes):
     :param right_list: array, magnitude of fft in right channel
     :return: list, values of energy spectral density
     """
-#aktualnie to działa źle
 #lewy kanał
     #wzór na widmową gęstość energii: esp = (fft*sprzężenie zespolone fft)/(2*pi)
     # left_stft = np.array(stft(left_list))
@@ -43,7 +42,7 @@ def energy_spectral_denisity(magnitudes):
     #plt.grid()
     #plt.show()
     # --------------END-TESTS---------------------------
-    return np.array(esp_left), np.array(esp_right)
+    return esp_left, esp_right
 
 #--------------TESTS---------------------------
 #wywoaływanie funkcji, aby sprawdzić, czy funkcja działa poprawnie
