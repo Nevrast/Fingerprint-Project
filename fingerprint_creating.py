@@ -80,7 +80,7 @@ def fing_creat(input):
                             sampling_rate=sampling_rate, data=data)
 
     esd_left, esd_right = energy_spectral_denisity(magnitudes=magnitudes)
-    fprint.append([esd_left, esd_right])
+    fprint.append(np.array([esd_left, esd_right]))
     if args.debug:
         print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
 
