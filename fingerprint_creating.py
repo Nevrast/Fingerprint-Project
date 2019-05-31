@@ -42,14 +42,12 @@ from parameters.spectral_roll_off import roll_off, roll_off_debug
 #     OUTPUT_PATH = args.output
 
 
-def fing_creat(input, debug_mode=False):
+def fing_creat(input, debug_mode=False, window_size=1024, offset=512):
     """
     This is a function which creates fingerprint matrix for specified input signal.
     """
     # wczytywanie pliku
 
-    window_size = 1024
-    offset = 512
     data, number_of_frames, channels, sampling_rate, duration = wave_open(input, normalize=True, rm_constant=True)
     left_channel, right_channel, w_time_bin = windowing(data=data, sampling_rate=sampling_rate, channels=channels,
                                                         window_size=window_size, offset=offset, to_mono=False,
@@ -69,45 +67,39 @@ def fing_creat(input, debug_mode=False):
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
     # do funkcji przekazany jest okienkowany sygnał
     zc_left, zc_right = zero_crossing(ch_left=left_channel, ch_right=right_channel)
-    zc_array = np.array([zc_right, zc_right])
     # jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania,
     # więc wypisze wszystkie argumenty na ekran
     if debug_mode:
-        print(f"Zero_crossing_rate in fprint: {zc_array}\n\n")
+        print(f"Zero_crossing_rate in fprint: {zc_left, zc_right}\n\n")
         #pg-debug-plots
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
 
     esd_left, esd_right = energy_spectral_denisity(magnitudes=magnitudes)
-    esd_array = np.array([esd_left, esd_right])
     if debug_mode:
-        print(f"Energy_spectral_denisity in fprint: {esd_array}\n\n")
+        print(f"Energy_spectral_denisity in fprint: {esd_left, esd_right}\n\n")
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
-    sc_array = np.array([sc_left, sc_right])
     if debug_mode:
-        print(f"Spectral centroid in fprint: {sc_array}\n\n")
+        print(f"Spectral centroid in fprint: {sc_left, sc_right}\n\n")
         spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
                                 data=data, time_bin=time_bin)
 
     sf_left, sf_right = spectral_flatness(magnitudes=magnitudes)
-    sf_array = np.array([sf_left, sf_right])
     if debug_mode:
-        print(f"Spectral flatness in fprint: {sf_array}\n\n")
+        print(f"Spectral flatness in fprint: {sf_left, sf_right}\n\n")
         spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
                                 sampling_rate=sampling_rate, data=data)
 
     rms_left, rms_right = rms(left_channel=left_channel, right_channel=right_channel)
-    rms_array = np.array([rms_left, rms_right])
     if debug_mode:
-        print(f'RMS in fprint: {rms_array}\n\n')
+        print(f'RMS in fprint: {rms_left, rms_right}\n\n')
         rms_debug(rms_left=rms_left, rms_right=rms_right, time_bin=w_time_bin, duration=duration,
                   sampling_rate=sampling_rate, data=data)
 
     ro_left, ro_right = roll_off(magnitudes=magnitudes)
-    ro_array = np.array([ro_left, ro_right])
     if debug_mode:
-        print(f'Spectral roll off in fprint: {ro_array}\n\n')
+        print(f'Spectral roll off in fprint: {ro_left, ro_right}\n\n')
         roll_off_debug(ro_left=ro_left, ro_right=ro_right, time_bin=time_bin, duration=duration,
                        sampling_rate=sampling_rate, data=data)
     # jeśli jesteśmy w trybie -d trzeba wyświetlić też wykresy, plt.show() powinien być wywoływany tylko raz
@@ -115,8 +107,8 @@ def fing_creat(input, debug_mode=False):
     if debug_mode:
         plt.show()
     # tworzy fprint
-    fprint_l = np.array([zc_array[0], sc_array[0], sf_array[0], rms_array[0], ro_array[0]])
-    fprint_r = np.array([zc_array[1], sc_array[1], sf_array[1], rms_array[1], ro_array[1]])
+    fprint_l = np.array([zc_left, sc_left, sf_left, rms_left, ro_left])
+    fprint_r = np.array([zc_right, sc_right, sf_right, rms_right, ro_right])
     # zwraca naszą listę
     return fprint_l, fprint_r
 
