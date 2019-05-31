@@ -110,7 +110,7 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512):
     fprint_l = np.array([zc_left, sc_left, sf_left, rms_left, ro_left])
     fprint_r = np.array([zc_right, sc_right, sf_right, rms_right, ro_right])
     # zwraca naszą listę
-    return fprint_l, fprint_r
+    return fprint_l, fprint_r, time_bin
 
 
 def fing_save(fingerprint, output, debug_mode=False):
