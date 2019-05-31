@@ -32,12 +32,14 @@ def diff_counting(ref, input):
     ref_fing_l, ref_fing_r, ref_time = fing_creat(ref)
     input_fing_l, input_fing_r, input_time = fing_creat(input)
 
+# jeśli pliki nie mają takiego samego czasu trwania lub próbkowania to dodaje zera do fprintów
     if ref_fing_r.shape != input_fing_r.shape:
         missing_zeros = ref_fing_l.shape[1] - input_fing_l.shape[1]
         zeros = np.zeros((5, missing_zeros))
         input_fing_l = np.append(input_fing_l, zeros, axis=-1)
         input_fing_r = np.append(input_fing_r, zeros, axis=-1)
 
+# normalizacja parametrów w fprincie
     for i in range(len(ref_fing_l)):
         max_ref_l = np.max(ref_fing_l[i])
         max_ref_r = np.max(ref_fing_r[i])
@@ -46,8 +48,10 @@ def diff_counting(ref, input):
         input_fing_l[i] = input_fing_l[i] / max_ref_l
         input_fing_r[i] = input_fing_r[i] / max_ref_r
 
+# obliczanie dystansu miedzy macierzami wg. metryki euclidesowej
     dst_l = minkowski_distance(ref_fing_l.T, input_fing_l.T)
     dst_r = minkowski_distance(ref_fing_r.T, input_fing_r.T)
+# słownik na parametry
     dst_dic = {
         'zc_dst_l': distance(ref_fing_l[0], input_fing_l[0]),
         'sc_dst_l': distance(ref_fing_l[1], input_fing_l[1]),
@@ -64,14 +68,13 @@ def diff_counting(ref, input):
     init_plots(dst_l, dst_r, dst_dic, ref_time)
 
 
+# obliczanie odległości
 def distance(x, y):
-    dst = np.array([])
-    for i in range(len(x)):
-        dst = np.append(dst, np.sqrt(np.power(y[i]-x[i], 2)))
-
+    dst = np.sqrt(np.power(y - x, 2))
     return dst
 
 
+# rysowanie wykresów
 def init_plots(dst, dst2, dst_dic, time):
     plot_l_apart = plt.subplot2grid((2, 2), (0, 0))
     plot_r_apart = plt.subplot2grid((2, 2), (0, 1))
@@ -108,6 +111,7 @@ def init_plots(dst, dst2, dst_dic, time):
     plot_all.legend(loc='upper left')
 
     plt.show()
+
 
 #wywołanie funkcji
 diff_counting(REFERENCE_PATH, INPUT_PATH)
