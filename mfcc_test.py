@@ -32,17 +32,18 @@ def mfccs(left_channel, right_channel, sampling_rate, n_mfcc):
     ro_left = np.array([])
     ro_right = np.array([])
 
-    for i in left_channel:
-        ro_l = librosa.feature.mfcc(y=i, sr=sampling_rate, S=None, n_mfcc=n_mfcc, dct_type=2, norm='ortho')
-        ro_left = np.append(ro_left,ro_l)
-
-    if type(left_channel) == type(right_channel):
-        for i in right_channel:
-            ro_r = librosa.feature.mfcc(y=i, sr=sampling_rate, S=None, n_mfcc=n_mfcc, dct_type=2, norm='ortho')
-            ro_right = np.append(ro_right, ro_r)
-    else:
-        ro_right = -1
-
+    # for i in left_channel:
+    #     ro_l = librosa.feature.mfcc(y=i, sr=sampling_rate, S=None, n_mfcc=n_mfcc, dct_type=2, norm='ortho')
+    #     ro_left = np.append(ro_left,ro_l)
+    #
+    # if type(left_channel) == type(right_channel):
+    #     for i in right_channel:
+    #         ro_r = librosa.feature.mfcc(y=i, sr=sampling_rate, S=None, n_mfcc=n_mfcc, dct_type=2, norm='ortho')
+    #         ro_right = np.append(ro_right, ro_r)
+    # else:
+    #     ro_right = -1
+    ro_left = librosa.feature.mfcc(y=left_channel, sr=sampling_rate, S=None, n_mfcc=n_mfcc, dct_type=2, norm=None, n_fft=2048, hop_length=1024)
+    ro_right = librosa.feature.mfcc(y=right_channel, sr=sampling_rate, S=None, n_mfcc=n_mfcc, dct_type=2, norm=None)
     return ro_left, ro_right
 
 data, number_of_frames, channels, sampling_rate, duration = wave_open(r'wav_samples\rock.wav', normalize=True, rm_constant=True)
@@ -52,7 +53,7 @@ left_channel, right_channel = windowing(data=data, sampling_rate=sampling_rate,
                                             channels=channels, window_size=2048, offset=0, to_mono=False,
                                             fill_zeros=True)
 n_mfcc=12
-a, b = mfccs(left_channel, right_channel, sampling_rate, n_mfcc)
+a, b = mfccs(data[0], data[1], sampling_rate, n_mfcc)
 
-print(a, b)
-
+print(a.shape, b.shape)
+print(a)
