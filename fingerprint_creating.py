@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 from scipy.signal import stft
 
 from parameters.zcr import zero_crossing, zero_crossing_debug
-from parameters.energy_spectral_density import energy_spectral_denisity
+#from parameters.energy_spectral_density import energy_spectral_denisity
+from parameters.power_spectral_density import power_spectral_density, power_spectral_debug
 from parameters.spectral_flatness import spectral_flatness, spectral_flatness_debug
 from parameters.spectral_centroid import spectral_centroid, spectral_centroid_debug
 from parameters.rms import rms, rms_debug
@@ -34,7 +35,7 @@ parser.add_argument("-d", "--debug", help="- debugging mode, this argument is ca
 args = parser.parse_args()
 # wyświetla nazwy plików wejściowego i wyjściowego tylko w trybie debug
 if args.debug:
-    print("Input file: ", args.input)
+    print("Input file: ", args.input, "\n")
 INPUT_PATH = args.input
 
 if args.output:
@@ -79,10 +80,12 @@ def fing_creat(input):
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
 
-    esd_left, esd_right = energy_spectral_denisity(magnitudes=magnitudes)
-    fprint.append(np.array([esd_left, esd_right]))
+    psd_left, psd_right = power_spectral_density(left_channel, right_channel, sampling_rate, "hann")
+    fprint.append(np.array([psd_left, psd_right]))
     if args.debug:
-        print(f"Energy_spectral_denisity in fprint: {fprint[1]}\n\n")
+        print(f"Power spectral denisity in fprint: {fprint[1]}\n\n")
+        #power_spectra_debug()
+
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
     fprint.append(np.array([sc_left, sc_right]))
