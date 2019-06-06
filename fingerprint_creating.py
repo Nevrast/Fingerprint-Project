@@ -70,36 +70,30 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512):
     # jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania,
     # więc wypisze wszystkie argumenty na ekran
     if debug_mode:
-        print(f"Zero_crossing_rate in fprint: {zc_left, zc_right}\n\n")
-        #pg-debug-plots
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
 
     esd_left, esd_right = energy_spectral_denisity(magnitudes=magnitudes)
-    if debug_mode:
-        print(f"Energy_spectral_denisity in fprint: {esd_left, esd_right}\n\n")
+    # if debug_mode:
+        # print(f"Energy_spectral_denisity in fprint: {esd_left, esd_right}\n\n")
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
     if debug_mode:
-        print(f"Spectral centroid in fprint: {sc_left, sc_right}\n\n")
         spectral_centroid_debug(sc_left=sc_left, sc_right=sc_right, sampling_rate=sampling_rate, duration=duration,
                                 data=data, time_bin=time_bin)
 
     sf_left, sf_right = spectral_flatness(magnitudes=magnitudes)
     if debug_mode:
-        print(f"Spectral flatness in fprint: {sf_left, sf_right}\n\n")
         spectral_flatness_debug(sf_left=sf_left, sf_right=sf_right, time_bin=time_bin, duration=duration,
                                 sampling_rate=sampling_rate, data=data)
 
     rms_left, rms_right = rms(left_channel=left_channel, right_channel=right_channel)
     if debug_mode:
-        print(f'RMS in fprint: {rms_left, rms_right}\n\n')
         rms_debug(rms_left=rms_left, rms_right=rms_right, time_bin=w_time_bin, duration=duration,
                   sampling_rate=sampling_rate, data=data)
 
     ro_left, ro_right = roll_off(magnitudes=magnitudes)
     if debug_mode:
-        print(f'Spectral roll off in fprint: {ro_left, ro_right}\n\n')
         roll_off_debug(ro_left=ro_left, ro_right=ro_right, time_bin=time_bin, duration=duration,
                        sampling_rate=sampling_rate, data=data)
     # jeśli jesteśmy w trybie -d trzeba wyświetlić też wykresy, plt.show() powinien być wywoływany tylko raz
