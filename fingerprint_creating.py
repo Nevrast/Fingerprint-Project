@@ -22,7 +22,7 @@ from parameters.spectral_roll_off import roll_off, roll_off_debug
 # np.set_printoptions(threshold=sys.maxsize)
 
 
-def fing_creat(input, debug_mode=False, window_size=1024, offset=512):
+def fing_creat(input, debug_mode=False, window_size=1024, offset=512, window='hann'):
     """
     This is a function which creates fingerprint matrix for specified input signal.
     """
@@ -39,7 +39,7 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512):
     # magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
     # okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
 
-    freq_bin, time_bin, magnitudes = stft(x=data, fs=sampling_rate, window='hann',
+    freq_bin, time_bin, magnitudes = stft(x=data, fs=sampling_rate, window=window,
                                           nperseg=window_size, noverlap=offset, boundary=None)
 
     # dodawanie kolejnych parametrów do listy
@@ -54,11 +54,10 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512):
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
 
-
-    psd_left, psd_right = power_spectral_density(left_channel, right_channel, sampling_rate, "hann")
-    fprint.append(np.array([psd_left, psd_right]))
-    if args.debug:
-        print(f"Power spectral denisity in fprint: {fprint[1]}\n\n")
+    # psd_left, psd_right = power_spectral_density(window_left=left_channel, window_right=right_channel,
+    #                                              sampling_rate=sampling_rate, window=window)
+    # if debug_mode:
+        # print(f"Power spectral denisity in fprint: {fprint[1]}\n\n")
         #power_spectra_debug()
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
