@@ -13,12 +13,13 @@ def main():
         7: '7 - Quit program.'
         }
     print('Welcome to audio quality verification system.')
-    window_size = int(input('Set window size in samples(must be power of 2): '))
-    offset = int(input('Set window overlap in samples(must be power of 2 and less than window size): '))
-    debug = input('Display parameter plots while creating fingerprint? y/n: ')
+    print('Default settings\nWindow size: 1024\nOffset: 512\nDisplay parameter plots: no')
+    window_size = 1024
+    offset = 512
+    debug = 'n'
     if debug.lower() == 'y':
         debug_mode = True
-    else:
+    elif debug.lower() == 'n':
         debug_mode = False
     while True:
         print(f'Main menu:')
@@ -63,11 +64,9 @@ def main():
         elif user_input == 4:
             try:
                 dst_l
-
                 dst_dict
             except NameError:
                 dst_l = None
-
                 dst_dict = None
 
             if dst_l is None or dst_dict is None:
@@ -106,7 +105,10 @@ def main():
                     debug = input('Display parameter plots while creating fingerprint? y/n: ')
                     if debug.lower() == 'y':
                         debug_mode = True
+                    elif debug.lower() == 'n':
+                        debug_mode = False
                     else:
+                        print('There is no such option.\nSet to \'no\'')
                         debug_mode = False
                 elif options_input == 4:
                     break

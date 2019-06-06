@@ -42,11 +42,13 @@ def diff_counting(ref_fing_l, ref_fing_r, test_fing_l, test_fing_r):
         'sf_dst_l': distance(temp_ref_fing_l[2], temp_test_fing_l[2]),
         'rms_dst_l': distance(temp_ref_fing_l[3], temp_test_fing_l[3]),
         'ro_dst_l': distance(temp_ref_fing_l[4], temp_test_fing_l[4]),
+        'psd_dst_l': distance(temp_ref_fing_l[5], temp_test_fing_l[5]),
         'zc_dst_r': distance(temp_ref_fing_r[0], temp_test_fing_r[0]),
         'sc_dst_r': distance(temp_ref_fing_r[1], temp_test_fing_r[1]),
         'sf_dst_r': distance(temp_ref_fing_r[2], temp_test_fing_r[2]),
         'rms_dst_r': distance(temp_ref_fing_r[3], temp_test_fing_r[3]),
-        'ro_dst_r': distance(temp_ref_fing_r[4], temp_test_fing_r[4])
+        'ro_dst_r': distance(temp_ref_fing_r[4], temp_test_fing_r[4]),
+        'psd_dst_r': distance(temp_ref_fing_r[5], temp_test_fing_r[5])
     }
 
     return dst_l, average_dst_l, dst_r, average_dst_r, dst_dict
@@ -69,6 +71,7 @@ def distance_plots(dst_l, dst_r, dst_dic, time):
         plot_l_apart.plot(time, dst_dic['sf_dst_l'], label='Spectral Flatness', linewidth=0.6)
         plot_l_apart.plot(time, dst_dic['rms_dst_l'], label='Root Mean Square', linewidth=0.6)
         plot_l_apart.plot(time, dst_dic['ro_dst_l'], label='Spectral Rolloff', linewidth=0.6)
+        plot_l_apart.plot(time, dst_dic['psd_dst_l'], label='Average PSD', linewidth=0.6)
         plot_l_apart.minorticks_on()
         plot_l_apart.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_l_apart.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)
@@ -80,6 +83,7 @@ def distance_plots(dst_l, dst_r, dst_dic, time):
         plot_r_apart.plot(time, dst_dic['sf_dst_r'], label='Spectral Flatness', linewidth=0.6)
         plot_r_apart.plot(time, dst_dic['rms_dst_r'], label='Root Mean Square', linewidth=0.6)
         plot_r_apart.plot(time, dst_dic['ro_dst_r'], label='Spectral Rolloff', linewidth=0.6)
+        plot_r_apart.plot(time, dst_dic['psd_dst_r'], label='Average PSD', linewidth=0.6)
         plot_r_apart.minorticks_on()
         plot_r_apart.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_r_apart.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)
@@ -103,6 +107,7 @@ def distance_plots(dst_l, dst_r, dst_dic, time):
         plot_l_apart.plot(time, dst_dic['sf_dst_l'], label='Spectral Flatness', linewidth=0.6)
         plot_l_apart.plot(time, dst_dic['rms_dst_l'], label='Root Mean Square', linewidth=0.6)
         plot_l_apart.plot(time, dst_dic['ro_dst_l'], label='Spectral Rolloff', linewidth=0.6)
+        plot_l_apart.plot(time, dst_dic['psd_dst_l'], label='Average PSD', linewidth=0.6)
         plot_l_apart.minorticks_on()
         plot_l_apart.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_l_apart.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)

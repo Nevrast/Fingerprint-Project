@@ -12,7 +12,7 @@ from scipy.signal import stft
 
 from parameters.zcr import zero_crossing, zero_crossing_debug
 #from parameters.energy_spectral_density import energy_spectral_denisity
-from parameters.power_spectral_density import power_spectral_density, power_spectral_debug
+from parameters.power_spectral_density import power_spectral_density, power_spectral_density_debug
 from parameters.spectral_flatness import spectral_flatness, spectral_flatness_debug
 from parameters.spectral_centroid import spectral_centroid, spectral_centroid_debug
 from parameters.rms import rms, rms_debug
@@ -36,7 +36,7 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512, window='ha
 
     # freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
     # time_bin to czasowe pozycje kolejnych okienek
-    # magnitudes to trójwymiarowa macierz zawierająca dwa kanały, z których każdy składa się z N liczby
+    # magnitudes to trójwymiarowa(dwu) macierz zawierająca dwa kanały(lub mono), z których każdy składa się z N liczby
     # okien czasowych, gdzie każde okno czasowe to wektor amplitud kolejnych częstotliwośći
 
     freq_bin, time_bin, magnitudes = stft(x=data, fs=sampling_rate, window=window,
@@ -46,19 +46,17 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512, window='ha
     # nazwy funkcji powinny być nazwą parametru
     # każda funkcja powinna przyjmować jako argument listę, która zawiera zokienkowany sygnał wejściowy,\
     # następnie wykonywać odpowiednie operacje i zwracać dany parametr\
-    # do funkcji przekazany jest okienkowany sygnał
+    # do funkcji przekazany jest okienkowany sygnał lub stft
     zc_left, zc_right = zero_crossing(ch_left=left_channel, ch_right=right_channel)
-    # jeśli zostanie podany argument -d, skrypt jest odpalony w trybie debugowania,
-    # więc wypisze wszystkie argumenty na ekran
     if debug_mode:
         zero_crossing_debug(zc_left=zc_left, zc_right=zc_right, time_bin=w_time_bin, duration=duration,
                             sampling_rate=sampling_rate, data=data)
 
-    # psd_left, psd_right = power_spectral_density(window_left=left_channel, window_right=right_channel,
-    #                                              sampling_rate=sampling_rate, window=window)
-    # if debug_mode:
-        # print(f"Power spectral denisity in fprint: {fprint[1]}\n\n")
-        #power_spectra_debug()
+    psd_left, psd_right = power_spectral_density(psd_left=left_channel, psd_right=right_channel,
+                                                 sampling_rate=sampling_rate, window=window)
+    if debug_mode:
+        power_spectral_density_debug(psd_left=psd_left, psd_right=psd_right, time_bin=time_bin, duration=duration,
+                                     sampling_rate=sampling_rate, data=data)
 
     sc_left, sc_right = spectral_centroid(magnitudes=magnitudes, freq_bin=freq_bin)
     if debug_mode:
@@ -84,8 +82,8 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512, window='ha
     if debug_mode:
         plt.show()
     # tworzy fprint
-    fprint_l = np.array([zc_left, sc_left, sf_left, rms_left, ro_left])
-    fprint_r = np.array([zc_right, sc_right, sf_right, rms_right, ro_right])
+    fprint_l = np.array([zc_left, sc_left, sf_left, rms_left, ro_left, psd_left])
+    fprint_r = np.array([zc_right, sc_right, sf_right, rms_right, ro_right, psd_right])
     # zwraca naszą listę
     return fprint_l, fprint_r, time_bin
 

@@ -14,19 +14,21 @@ def power_spectral_density(psd_left, psd_right, sampling_rate, window):
     psd_l = wrapper(psd_left, sampling_rate, window)
     for i in psd_l:
         av_psd_l = np.append(av_psd_l, np.average(i))
-    if type(psd_right) is None:
+    if type(psd_right) != type(psd_left):
         av_psd_r = -1
     else:
+        print(type(psd_right))
         psd_r = wrapper(psd_right, sampling_rate, window)
+
         for i in psd_r:
             av_psd_r = np.append(av_psd_r, np.average(i))
     return av_psd_l, av_psd_r
 
 
-def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate, data):
+def power_spectral_density_debug(psd_left, psd_right, time_bin, duration, sampling_rate, data):
     """
-    :param sc_left: array, spectral centroids of left channel or mono file
-    :param sc_right: array or int, spectral centroids of right channel or -1 if file is mono
+    :param psd_left: array, average power spectral density of left channel or mono file
+    :param psd_right: array or int, average power spectral density or -1 if file is mono
     :param time_bin: array, time bins
     :param duration: float,  duration of the wav file
     :param sampling_rate: float, sampling rate of the wav file
@@ -38,9 +40,9 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
     fig = plt.figure(6)
     fig.canvas.set_window_title('Average power spectral density')
 
-    if type(sc_right) != type(sc_left):
+    if type(psd_right) != type(psd_left):
         plot_mono = plt.subplot2grid((1, 1), (0, 0))
-        plot_mono.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label="Average PSD")
+        plot_mono.plot(time_bin, psd_left, color='#23108f', linewidth=0.8, label="Average PSD")
         plot_mono.set_xlabel('Time [s]')
         plot_mono.set_ylabel('Average PSD')
         plot_mono.minorticks_on()
@@ -60,7 +62,7 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_r = plt.subplot2grid((2, 2), (0, 1))
         plot_both = plt.subplot2grid((2, 2), (1, 0), colspan=2)
 
-        plot_l.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label='Average PSD')
+        plot_l.plot(time_bin, psd_left, color='#23108f', linewidth=0.8, label='Average PSD')
         plot_l.set_title('Left channel')
         plot_l.set_xlabel('Time [s]')
         plot_l.set_ylabel('Average PSD')
@@ -76,7 +78,7 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_l.legend(loc='lower left', bbox_to_anchor=(0., 1.))
         plot_signal_l.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
-        plot_r.plot(time_bin, sc_right, color='r', linewidth=0.8, label='Average power spectral density')
+        plot_r.plot(time_bin, psd_right, color='r', linewidth=0.8, label='Average PSD')
         plot_r.set_title('Right channel')
         plot_r.set_xlabel('Time [s]')
         plot_r.set_ylabel('Average PSD')
@@ -92,8 +94,8 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_r.legend(loc='lower left', bbox_to_anchor=(0., 1.))
         plot_signal_r.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
-        plot_both.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, zorder=10, label='Left')
-        plot_both.plot(time_bin, sc_right, color='#de0000', linewidth=0.8, zorder=11, label='Right')
+        plot_both.plot(time_bin, psd_left, color='#23108f', linewidth=0.8, zorder=10, label='Left')
+        plot_both.plot(time_bin, psd_right, color='#de0000', linewidth=0.8, zorder=11, label='Right')
         plot_both.set_title('Both channels')
         plot_both.set_xlabel('Time [s]')
         plot_both.set_ylabel('Average PSD')
@@ -104,4 +106,4 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_both.legend(loc='upper left')
 
         plt.subplots_adjust(wspace=0.25)
-    plt.suptitle('Spectral Centroid', fontsize=16)
+    plt.suptitle('Average Power Spectral Density', fontsize=16)
