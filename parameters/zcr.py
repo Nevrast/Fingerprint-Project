@@ -70,6 +70,9 @@ def zero_crossing_debug(zc_left, zc_right, time_bin, duration, sampling_rate, da
         plot_signal_mono.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
     else:
+        plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25,
+                            wspace=0.35)
+
         plot_l = plt.subplot2grid((2, 2), (0, 0))
         plot_r = plt.subplot2grid((2, 2), (0, 1))
         plot_both = plt.subplot2grid((2, 2), (1, 0), colspan=2)

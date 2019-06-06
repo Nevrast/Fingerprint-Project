@@ -74,6 +74,10 @@ def spectral_flatness_debug(sf_left, sf_right, time_bin, duration, sampling_rate
         plot_signal_mono.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
     else:
+
+        plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25,
+                            wspace=0.35)
+
         plot_l = plt.subplot2grid((2, 2), (0, 0))
         plot_r = plt.subplot2grid((2, 2), (0, 1))
         plot_both = plt.subplot2grid((2, 2), (1, 0), colspan=2)
@@ -93,6 +97,7 @@ def spectral_flatness_debug(sf_left, sf_right, time_bin, duration, sampling_rate
         plot_l.patch.set_visible(False)
         plot_l.legend(loc='lower left', bbox_to_anchor=(0., 1.))
         plot_signal_l.legend(loc='lower right', bbox_to_anchor=(1., 1.))
+
 
         plot_r.plot(time_bin, sf_right, color='r', linewidth=0.8, label='Spectral Flatness')
         plot_r.set_title('Right channel')

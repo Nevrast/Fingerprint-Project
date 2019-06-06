@@ -17,7 +17,6 @@ def power_spectral_density(psd_left, psd_right, sampling_rate, window):
     if type(psd_right) != type(psd_left):
         av_psd_r = -1
     else:
-        print(type(psd_right))
         psd_r = wrapper(psd_right, sampling_rate, window)
 
         for i in psd_r:
@@ -58,6 +57,7 @@ def power_spectral_density_debug(psd_left, psd_right, time_bin, duration, sampli
         plot_signal_mono.legend(loc='lower right', bbox_to_anchor=(1., 1.))
 
     else:
+        plt.tight_layout(pad=1.0, w_pad=0.5)
         plot_l = plt.subplot2grid((2, 2), (0, 0))
         plot_r = plt.subplot2grid((2, 2), (0, 1))
         plot_both = plt.subplot2grid((2, 2), (1, 0), colspan=2)

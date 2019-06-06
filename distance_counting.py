@@ -75,7 +75,7 @@ def distance_plots(dst_l, dst_r, dst_dic, time):
         plot_l_apart.minorticks_on()
         plot_l_apart.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_l_apart.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)
-        plot_l_apart.legend(loc='lower left', bbox_to_anchor=(0., 1.), ncol=2)
+        plot_l_apart.legend(loc='lower left', bbox_to_anchor=(0., 1.1), ncol=2)
 
         plot_r_apart.set_title('Right channel distances')
         plot_r_apart.plot(time, dst_dic['zc_dst_r'], label='Zero Crossing', linewidth=0.6)
@@ -87,7 +87,7 @@ def distance_plots(dst_l, dst_r, dst_dic, time):
         plot_r_apart.minorticks_on()
         plot_r_apart.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_r_apart.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)
-        plot_r_apart.legend(loc='lower right', bbox_to_anchor=(1., 1.), mode='expand')
+        plot_r_apart.legend(loc='lower left', bbox_to_anchor=(0., 1.1, 2., 2.), ncol=2)
 
         plot_all.set_title('Fingerprint distances')
         plot_all.plot(time, dst_l, label='Left Channel', linewidth=0.6)
@@ -111,7 +111,7 @@ def distance_plots(dst_l, dst_r, dst_dic, time):
         plot_l_apart.minorticks_on()
         plot_l_apart.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_l_apart.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)
-        plot_l_apart.legend(loc='lower left', bbox_to_anchor=(0., 1.), ncol=2)
+        plot_l_apart.legend(loc='lower left', bbox_to_anchor=(0., 1., 2, 2), ncol=2)
 
         plot_all.set_title('Fingerprint distances')
         plot_all.plot(time, dst_l, label='Left Channel', linewidth=0.6)
