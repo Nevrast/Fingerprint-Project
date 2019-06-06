@@ -1,4 +1,6 @@
 import numpy as np
+import scipy.signal as sl
+import matplotlib.pyplot as plt
 
 
 def wrapper(windows, sampling_rate, window_shape):
@@ -6,16 +8,16 @@ def wrapper(windows, sampling_rate, window_shape):
     return psd
 
 
-def power_spectral_density(window_left, window_right, sampling_rate, window):
+def power_spectral_density(psd_left, psd_right, sampling_rate, window):
     av_psd_l = np.array([])
     av_psd_r = np.array([])
-    psd_l = wrapper(window_left, sampling_rate, window)
+    psd_l = wrapper(psd_left, sampling_rate, window)
     for i in psd_l:
         av_psd_l = np.append(av_psd_l, np.average(i))
-    if type(window_right) is None:
+    if type(psd_right) is None:
         av_psd_r = -1
     else:
-        psd_r = wrapper(window_right, sampling_rate, window)
+        psd_r = wrapper(psd_right, sampling_rate, window)
         for i in psd_r:
             av_psd_r = np.append(av_psd_r, np.average(i))
     return av_psd_l, av_psd_r
@@ -38,9 +40,9 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
 
     if type(sc_right) != type(sc_left):
         plot_mono = plt.subplot2grid((1, 1), (0, 0))
-        plot_mono.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label="Average power spectral density")
+        plot_mono.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label="Average PSD")
         plot_mono.set_xlabel('Time [s]')
-        plot_mono.set_ylabel('Centroid [Hz]')
+        plot_mono.set_ylabel('Average PSD')
         plot_mono.minorticks_on()
         plot_mono.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_mono.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
@@ -58,10 +60,10 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_r = plt.subplot2grid((2, 2), (0, 1))
         plot_both = plt.subplot2grid((2, 2), (1, 0), colspan=2)
 
-        plot_l.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label='Average power spectral density')
+        plot_l.plot(time_bin, sc_left, color='#23108f', linewidth=0.8, label='Average PSD')
         plot_l.set_title('Left channel')
         plot_l.set_xlabel('Time [s]')
-        plot_l.set_ylabel('Centroid [Hz]')
+        plot_l.set_ylabel('Average PSD')
         plot_l.minorticks_on()
         plot_l.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_l.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
@@ -77,7 +79,7 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_r.plot(time_bin, sc_right, color='r', linewidth=0.8, label='Average power spectral density')
         plot_r.set_title('Right channel')
         plot_r.set_xlabel('Time [s]')
-        plot_r.set_ylabel('Centroid [Hz]')
+        plot_r.set_ylabel('Average PSD')
         plot_r.minorticks_on()
         plot_r.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_r.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.4)
@@ -94,7 +96,7 @@ def spectral_centroid_debug(sc_left, sc_right, time_bin, duration, sampling_rate
         plot_both.plot(time_bin, sc_right, color='#de0000', linewidth=0.8, zorder=11, label='Right')
         plot_both.set_title('Both channels')
         plot_both.set_xlabel('Time [s]')
-        plot_both.set_ylabel('Centroid [Hz]')
+        plot_both.set_ylabel('Average PSD')
         plot_both.minorticks_on()
         plot_both.grid(b=True, which='major', color='#93a1a1', alpha=0.5, linestyle='-')
         plot_both.grid(b=True, which='minor', color='#93a1a1', linestyle='--', alpha=0.2)
