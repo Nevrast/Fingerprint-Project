@@ -2,6 +2,7 @@ from fingerprint_creating import fing_creat
 from distance_counting import diff_counting, distance_plots
 from support_functions.excel_io import save_to_excel, load_from_excel
 
+
 def main():
     menu = {
         1: '1 - Create reference fingerprint.',
@@ -45,13 +46,13 @@ def main():
         user_input = int(input('Enter number to navigate: '))
 
         if user_input == 1:
-            print('To create reference fingerprint from audio file enter path to the audio file or filename:\n')
+            print('To create reference fingerprint from audio file enter path to the audio file or filename:')
             ref_path = input()
             print('Creating reference fingerprint...')
             ref_fing_l, ref_fing_r, ref_time = fing_creat(ref_path, window_size=window_size, offset=offset,
                                                           debug_mode=debug_mode)
         elif user_input == 2:
-            print('Enter path to the audio file or filename to compare with reference:\n')
+            print('Enter path to the audio file or filename to compare with reference:')
             test_path = input()
             print('Creating test fingerprint...')
             test_fing_l, test_fing_r, test_time = fing_creat(test_path, window_size=window_size, offset=offset,
