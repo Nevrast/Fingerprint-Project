@@ -6,10 +6,17 @@ Recording.wav
 sine_stereo_10.0_0.05kHz.wav
 sine_stereo_100.0_44.1kHz.wav
 
+# Excel or csv files
+*.xlsx
+*.xls
+*.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+# VS Code files
+.vscode/
 
 # C extensions
 *.so
