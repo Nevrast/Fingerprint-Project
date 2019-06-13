@@ -1,6 +1,6 @@
 from fingerprint_creating import fing_creat
 from distance_counting import diff_counting, distance_plots
-from excel_io import save_to_excel, load_from_excel
+from support_functions.excel_io import save_to_excel, load_from_excel
 
 def main():
     menu = {
@@ -11,15 +11,19 @@ def main():
         5: '5 - Options.',
         6: '6 - Save reference fingerprint.',
         7: '7 - Load reference fingerprint.',
-        8: '8 - Quit program.'
+        8: '8 - Save test fingerprint',
+        9: '9 - Load test fingerprint',
+        0: '0 - Quit program.'
         }
     print('Welcome to audio quality verification system.')
     print('Default settings\nWindow size: 1024\nOffset: 512\nDisplay parameter plots: no')
 
     ref_fing_l = None
     ref_fing_r = None
+    ref_time = None
     test_fing_l = None
     test_fing_r = None
+    test_time = None
 
     ref_path = None
     test_path = None
@@ -38,16 +42,16 @@ def main():
 
         for value in menu:
             print(f'{menu[value]}')
-        user_input = int(input('Type number to navigate: '))
+        user_input = int(input('Enter number to navigate: '))
 
         if user_input == 1:
-            print('To create reference fingerprint from audio file type path to the audio file or filename:\n')
+            print('To create reference fingerprint from audio file enter path to the audio file or filename:\n')
             ref_path = input()
             print('Creating reference fingerprint...')
             ref_fing_l, ref_fing_r, ref_time = fing_creat(ref_path, window_size=window_size, offset=offset,
                                                           debug_mode=debug_mode)
         elif user_input == 2:
-            print('Type path to the audio file or filename to compare with reference:\n')
+            print('Enter path to the audio file or filename to compare with reference:\n')
             test_path = input()
             print('Creating test fingerprint...')
             test_fing_l, test_fing_r, test_time = fing_creat(test_path, window_size=window_size, offset=offset,
@@ -129,13 +133,22 @@ def main():
 
         elif user_input == 6:
             print('Saving reference fingerprint to excel file...')
-            save_to_excel(f'{ref_path}', fp_left=ref_fing_l, fp_right=ref_fing_r)
+            save_to_excel(ref_path, fp_left=ref_fing_l, fp_right=ref_fing_r, time_bins=ref_time)
         
         elif user_input == 7:
-            print('Enter filename or path to saved reference fingerprint')
-            load_from_excel(input())
-
+            print('Enter filename or path to saved reference fingerprint:')
+            ref_fing_l, ref_fing_r, ref_time = load_from_excel(input())
+            print(ref_time.shape)
+        
         elif user_input == 8:
+            print('Saving test fingerprint to excel file...')
+            save_to_excel(test_path, fp_left=test_fing_l, fp_right=test_fing_r, time_bins=test_time)
+
+        elif user_input == 9:
+            print('Enter filename or path to saved test fingerprint:')
+            test_fing_l, test_fing_r, test_time = load_from_excel(input())
+
+        elif user_input == 0:
             print('Bye bye.')
             break
         else:

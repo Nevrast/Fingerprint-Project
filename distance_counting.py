@@ -12,8 +12,8 @@ def diff_counting(ref_fing_l, ref_fing_r, test_fing_l, test_fing_r):
     # check if files have same duration or sampling frequency
     if temp_ref_fing_l.shape != temp_test_fing_l.shape:
         print('Files must have same duration and/or sampling frequency.')
-        dst_l, average_dst_l, dst_r, average_dst_r = None, None, None, None
-        return dst_l, average_dst_l, dst_r, average_dst_r
+        dst_l, average_dst_l, dst_r, average_dst_r, dst_dict = None, None, None, None, None
+        return dst_l, average_dst_l, dst_r, average_dst_r, dst_dict
     # normalizacja parametrów w fprincie
     for i in range(len(temp_ref_fing_l)):
         max_ref_l = np.max(temp_ref_fing_l[i])

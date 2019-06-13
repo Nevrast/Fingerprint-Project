@@ -28,12 +28,13 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512, window='ha
     """
 
     # wczytywanie pliku
-
-    data, number_of_frames, channels, sampling_rate, duration = wave_open(input, normalize=True, rm_constant=True)
+    try:
+        data, number_of_frames, channels, sampling_rate, duration = wave_open(input, normalize=True, rm_constant=True)
+    except TypeError:
+        return None, None, None
     left_channel, right_channel, w_time_bin = windowing(data=data, sampling_rate=sampling_rate, channels=channels,
                                                         window_size=window_size, offset=offset, to_mono=False,
                                                         fill_zeros=True)
-
     # freq_bin to częstotliwości odpowiadające amplitudom w każdym oknie czasowym
     # time_bin to czasowe pozycje kolejnych okienek
     # magnitudes to trójwymiarowa(dwu) macierz zawierająca dwa kanały(lub mono), z których każdy składa się z N liczby
@@ -86,21 +87,3 @@ def fing_creat(input, debug_mode=False, window_size=1024, offset=512, window='ha
     fprint_r = np.array([zc_right, sc_right, sf_right, rms_right, ro_right, psd_right])
     # zwraca naszą listę
     return fprint_l, fprint_r, time_bin
-
-
-def fing_save(fingerprint, output, debug_mode=False):
-    if debug_mode:
-        print("Saving to file...")
-    file = open(output, 'w')
-    for elem in fingerprint:
-        file.write(str(elem))
-    file.close()
-    if debug_mode:
-        print("Saving to file finished.")
-
-
-#wywołanie funkcji i przypisanie do zmiennej new_fingerprint
-# new_fingerprint = fing_creat(INPUT_PATH)
-#jeśli został podany argument -o zostanie wywołana funkcja zapisująca do pliku
-# if args.output:
-#     fing_save(new_fingerprint, OUTPUT_PATH)
