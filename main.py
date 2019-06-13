@@ -128,10 +128,11 @@ def main():
                     print('There is no such option.')
 
         elif user_input == 6:
-            print('Currently not working.')
+            print('Saving reference fingerprint to excel file...')
             save_to_excel(f'{ref_path}', fp_left=ref_fing_l, fp_right=ref_fing_r)
         
         elif user_input == 7:
+            print('Enter filename or path to saved reference fingerprint')
             load_from_excel(input())
 
         elif user_input == 8:

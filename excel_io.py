@@ -16,8 +16,10 @@ def save_to_excel(path, fp_left, fp_right):
 
 
 def load_from_excel(path):
-    df = pd.read_excel(path)
-    print(df)
+    df_left = pd.read_excel(path, header=None, usecols='B:G', sheet_name='left_channel')
+    df_right = pd.read_excel(path, header=None, usecols='B:G', sheet_name='right_channel')
+    print(df_left.values.T.shape, df_right.values.T.shape)
+
 
 
 
