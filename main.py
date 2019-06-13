@@ -29,7 +29,7 @@ def main():
     ref_path = None
     test_path = None
 
-    user_input = None
+
 
     window_size = 1024
     offset = 512
