@@ -29,6 +29,8 @@ def main():
     ref_path = None
     test_path = None
 
+    user_input = None
+
     window_size = 1024
     offset = 512
     debug = 'n'
@@ -43,8 +45,10 @@ def main():
 
         for value in menu:
             print(f'{menu[value]}')
-        user_input = int(input('Enter number to navigate: '))
-
+        try:
+            user_input = int(input('Enter number to navigate: '))
+        except ValueError:
+            continue
         if user_input == 1:
             print('To create reference fingerprint from audio file enter path to the audio file or filename:')
             ref_path = input()
