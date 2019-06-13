@@ -1,5 +1,4 @@
 import numpy as np
-from skimage import util
 
 
 def windowing(data, sampling_rate, channels, window_size=2048, offset=0, to_mono=False, fill_zeros=True):
